@@ -1,7 +1,7 @@
 /* CSS declarations go here */
 
 
-/* Idea List */
+/* ===================== Idea List ===================== */
 
 .idea-description {
 	display: block;
@@ -65,7 +65,7 @@
 }
 
 
-/* Page Layout */
+/* ===================== Page Layout ===================== */
 .page-body {
 	padding: 0 60px;
 	width:74%;
@@ -93,7 +93,7 @@
 }
 
 
-/* Generic Declarations */
+/* ===================== Generic Declarations ===================== */
 
 
 h1 {
