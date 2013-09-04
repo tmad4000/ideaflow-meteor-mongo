@@ -5,6 +5,10 @@ if (Meteor.isClient) {
   Template.ideaList.helpers({
     idea: function() {
       return Ideas.find().fetch();
+//TODO: reverse order
+
+//      return Ideas.find({}, {sort: {$natural: 1}}).fetch();
+//      return Ideas.find({}, {sort: {timestamp: -1}}).fetch();
     },
     relatedIdea: function(id) {
       var relatedIdeas = [];

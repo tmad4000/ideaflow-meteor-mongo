@@ -1,9 +1,132 @@
 /* CSS declarations go here */
+
+
+/* Idea List */
+
 .idea-description {
 	display: block;
 }
 
-.idea-list li {
+.idea-list {
+	padding-left: 1px;
+}
+
+
+.idea-list li { /* all li's in an idea-list */
 	list-style-type: none;
-	padding: 4px;
+	
+}
+
+
+.idea-list > li { /* specifically the list li's in an idea-list */
+	padding: 0px 4px 20px 4px;
+	border-top: solid 1px #CCC;
+}
+
+.idea-list .related-ideas > li {
+	display: inline;
+
+	background-color: #3a87ad;
+	color: #EEE;
+
+	font-size: 12px;
+	line-height: 22px;
+	
+	padding: 3px 6px;
+	border-radius: 3px;
+	margin-left: 5px;
+	margin-top: 4px;
+	margin-bottom: 10px;
+	
+}
+
+.idea-list .related-ideas  {
+	padding-top: 1px;
+	padding-left: 0px;
+	margin-left: -3px;
+	float:left;
+}
+
+.related-ideas-all {
+	height:25px;
+	width:1000px;
+	/*background-color: red; for alignment check*/ 
+}
+
+.related-idea-input {
+	float:right;
+	width:180px;
+	height:20px;
+}
+
+.related-idea-input .related-idea-title {
+	width:120px;
+	
+}
+
+
+/* Page Layout */
+.page-body {
+	padding: 0 60px;
+	width:74%;
+	max-width: 1000px;
+	background-color: #FFF;
+}
+
+.add-idea-input
+{
+
+	padding-top: 7px;
+	padding-bottom:20px;
+	width:100%;
+
+}
+
+.add-idea-input .idea-title
+{
+	width:100%;
+}
+
+.add-idea-input .idea-description
+{
+	width:100%;
+}
+
+
+/* Generic Declarations */
+
+
+h1 {
+	font-size: 20px;
+	font-weight: 200;
+	color: #777777;
+	text-shadow: 0 1px 0 #ffffff;
+	padding-left: 40px;
+}
+
+a {
+	color: #0088cc;
+	text-decoration: none;
+}
+
+a:hover, a:focus {
+    color: #005580;
+    text-decoration: underline;
+}
+
+
+textarea, input  {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	color:rgb(51, 51, 51);
+	font-size: 14px;
+	border: solid 1px #CCC;
+	padding: 2px 4px;
+}
+body {
+
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	color:rgb(51, 51, 51);
+	font-size: 14px;
+
+	background: #F0F0F0
 }

@@ -3,9 +3,16 @@
 </head>
 
 <body>
+
 	<h1>IdeaFlow</h1>
-	{{> ideaInput}}
-	{{> ideaList}}
+	<div class="page-body">
+		<div class="add-idea-input">
+			{{> ideaInput}}
+		</div>
+
+
+		{{> ideaList}}
+	</div>
 </body>
 
 <template name='ideaInput'>
@@ -18,14 +25,23 @@
 	<ul class='idea-list'>
 		{{#each idea}}
 			<li class='main-idea' id='{{_id}}'>
-				{{title}}: {{description}}
-				<ul class='related-ideas'>
-					{{# each relatedIdea _id}}					
-						<li>{{title}}</li>
-					{{/each}}
-				</ul>
-				<input class='related-idea-title' placeholder='Idea Title'>
-				<button class='related-idea-submit'>Submit Related Idea</button>	
+				<div class='idea-text'>
+					<a href="#">{{title}}</a>: {{description}}
+				</div>
+
+				<div class='related-ideas-all'>
+					<ul class='related-ideas'>
+						{{# each relatedIdea _id}}					
+							<li>{{title}}</li>
+						{{/each}}
+
+						
+					</ul>
+					<div class='related-idea-input'>
+						<input class='related-idea-title' placeholder='Add Related Idea'>
+						<button class='related-idea-submit'>Go</button>	
+					</div>	
+				</div>
 			</li>
 		{{/each}}
 	</ul>
