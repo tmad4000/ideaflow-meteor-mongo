@@ -1,0 +1,32 @@
+<head>
+  <title>IdeaFlow</title>
+</head>
+
+<body>
+	<h1>IdeaFlow</h1>
+	{{> ideaInput}}
+	{{> ideaList}}
+</body>
+
+<template name='ideaInput'>
+	<input class='idea-title' placeholder='Idea Title'>
+	<textarea class='idea-description' placeholder='Idea Description'></textarea>
+	<button class='idea-submit'>Submit Idea</button>
+</template>
+
+<template name='ideaList'>
+	<ul class='idea-list'>
+		{{#each idea}}
+			<li class='main-idea' id='{{_id}}'>
+				{{title}}: {{description}}
+				<ul class='related-ideas'>
+					{{# each relatedIdea _id}}					
+						<li>{{title}}</li>
+					{{/each}}
+				</ul>
+				<input class='related-idea-title' placeholder='Idea Title'>
+				<button class='related-idea-submit'>Submit Related Idea</button>	
+			</li>
+		{{/each}}
+	</ul>
+</template>

@@ -1,0 +1,9 @@
+/* CSS declarations go here */
+.idea-description {
+	display: block;
+}
+
+.idea-list li {
+	list-style-type: none;
+	padding: 4px;
+}
