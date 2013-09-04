@@ -4,7 +4,8 @@ if (Meteor.isClient) {
 
   Template.ideaList.helpers({
     idea: function() {
-      return Ideas.find().fetch();
+//      return Ideas.find().fetch();
+      return Ideas.find({}, {sort: {timestamp: -1}}).fetch();
 //TODO: reverse order
 
 //      return Ideas.find({}, {sort: {$natural: 1}}).fetch();
@@ -29,7 +30,7 @@ if (Meteor.isClient) {
       console.log('clieckd');
       var title = $('.idea-title').val();
       var description = $('.idea-description').val();
-      Ideas.insert({ title: title, description: description, relatedIdeas: [] });
+      Ideas.insert({ title: title, description: description, relatedIdeas: [],timestamp:Date.now() });
     }
   });
 
@@ -40,6 +41,7 @@ if (Meteor.isClient) {
 
       var relatedIdeaId = Ideas.insert({ title: title, description: '', relatedIdeas: [] });    
       Ideas.update(mainIdeaId, { $push: {relatedIdeas: relatedIdeaId} })
+
     }
   });
 }
