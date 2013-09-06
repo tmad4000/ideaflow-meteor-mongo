@@ -41,11 +41,9 @@ if (Meteor.isClient) {
 */
       
       //console.log(x=$(e.target).nextAll('.related-idea-add-ms').first());
+      //console.log($(e.target))
       var newRelIdeas = $(e.target).nextAll('.related-idea-add-ms').first().magicSuggest().getSelectedItems();
-      console.log(x=newRelIdeas);
-
-       
-
+     // console.log(x=newRelIdeas);
 
 
       var mainIdeaId = $(e.target).closest('.main-idea').attr('id');
@@ -96,9 +94,32 @@ if (Meteor.isClient) {
           }],
           //data: '/ajax/autocomplete/', //jsonData2
           selectionPosition: 'right',
-          emptyText:'Add related ideas',
+          emptyText:'Connect related ideas',
           selectionStacked: true
         });
+
+        $('.related-idea-add-ms').each(function () {
+          var ms = $(this).magicSuggest({});
+          $(ms).on('selectionchange', function(event, combo, selection) {
+
+              var newRelIdeas = selection; //$(e.target).nextAll('.related-idea-add-ms').first().magicSuggest().getSelectedItems();
+             // console.log(x=newRelIdeas);
+
+
+              var mainIdeaId = combo.container.closest('.main-idea').attr('id'); // $(e.target).closest('.main-idea').attr('id');
+
+              for(var i=0;i<newRelIdeas.length;i++) {
+                var relatedIdeaId = Ideas.insert({ title: newRelIdeas[i].name, description: ''+newRelIdeas[i].description, relatedIdeas: [],timestamp:Date.now() });  //#TODO dates server side
+                Ideas.update(mainIdeaId, { $push: {relatedIdeas: relatedIdeaId} })
+              }
+
+
+              //console.log(combo.container.closest('.main-idea').attr('id'));
+
+//              console.log(combo.container);
+          });
+        });
+
   }
 }
 

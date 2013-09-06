@@ -12,6 +12,7 @@
 	<div class="page-body">
 		<div class="add-idea-input">
 			{{> ideaInput}}
+
 		</div>
 
 
@@ -22,6 +23,20 @@
 <template name='ideaInput'>
 	<input class='idea-title' placeholder='New Idea Title'>
 	<textarea class='idea-description' placeholder='New Idea Description'></textarea>
+	<div class='related-ideas-all'>
+		<ul class='related-ideas'>
+			{{# each relatedIdea _id}}					
+				<li>{{title}}</li>
+			{{/each}}
+
+			
+		</ul>
+		<div class='related-idea-input'>
+			<button class='related-idea-submit'>Go</button>	
+			<input class='related-idea-add' width="400">
+			
+		</div>
+	</div>
 	<button class='idea-submit'>Add New Idea</button>
 </template>
 
@@ -43,7 +58,7 @@
 					</ul>
 					<div class='related-idea-input'>
 						<button class='related-idea-submit'>Go</button>	
-						<input class='related-idea-add' placeholder='Add Related Idea'>
+						<input class='related-idea-add'>
 						
 					</div>
 				</div>
