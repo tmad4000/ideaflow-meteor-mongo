@@ -2,7 +2,6 @@ Ideas = new Meteor.Collection('ideas');
 
 if (Meteor.isClient) {
 
-  
 
 
 
@@ -27,24 +26,34 @@ if (Meteor.isClient) {
     }
   });
 
-
-
   Template.ideaInput.events({
-    'click .idea-submit' : function () {
+    'click .idea-submit, keypress .' : function () {
       var title = $('.idea-title').val();
       var description = $('.idea-description').val();
-      Ideas.insert({ title: title, description: description, relatedIdeas: [],timestamp:Date.now() });
+      Ideas.insert({ title: title, description: description, relatedIdeas: [],timestamp:Date.now() }); //#TODO dates server side
     }
   });
 
   Template.ideaList.events({
     'click .related-idea-submit': function(e) {
-      var title = $(e.target).prevAll('.related-idea-add:first').val();
+      /*var title = $(e.target).prevAll('.related-idea-add-ms:first input').val();
       console.log('related idea title:', title);
+*/
+      
+      //console.log(x=$(e.target).nextAll('.related-idea-add-ms').first());
+      var newRelIdeas = $(e.target).nextAll('.related-idea-add-ms').first().magicSuggest().getSelectedItems();
+      console.log(x=newRelIdeas);
+
+       
+
+
+
       var mainIdeaId = $(e.target).closest('.main-idea').attr('id');
 
-      var relatedIdeaId = Ideas.insert({ title: title, description: '', relatedIdeas: [],timestamp:Date.now() });    
-      Ideas.update(mainIdeaId, { $push: {relatedIdeas: relatedIdeaId} })
+      for(var i=0;i<newRelIdeas.length;i++) {
+        var relatedIdeaId = Ideas.insert({ title: newRelIdeas[i].name, description: ''+newRelIdeas[i].description, relatedIdeas: [],timestamp:Date.now() });  //#TODO dates server side
+        Ideas.update(mainIdeaId, { $push: {relatedIdeas: relatedIdeaId} })
+      }
 
     }
   });
@@ -52,36 +61,37 @@ if (Meteor.isClient) {
   Template.ideaList.rendered = function() {
      window.msAutofillInline = $('.related-idea-add').magicSuggest({
           // selectionPosition: 'right',
-          selectionCls: 'selectedx',
+          cls: 'related-idea-add-ms',
+          selectionCls: 'related-idea-selected-ms',
           renderer: function(idea){
               //console.log(idea.name)
               return '<div>' +
                       '<div style="font-family: Arial; font-weight: bold">' + idea.name + '</div>' +
-                      '<div><b>Text</b>: ' + idea.desc + '</div>' +
+                      '<div><b>Text</b>: ' + idea.description + '</div>' +
                      '</div>';
           },
           minChars: 0,
           typeDelay: 20,
           selectionStacked: true,
           method:'GET',
-          expanded:true,
+          expanded:false,
           expandOnFocus:true,
           maxDropHeight:'500px',
           name:'query',
           data: [{
               id: 0,
               name: "Panda",
-              desc: "Pandas are great furry animals",
+              description: "Pandas are great furry animals",
               
           },{
               id: 1,
               name: "Butterfly",
-              desc: "Butterflies fly better with theirs wings on",
+              description: "Butterflies fly better with theirs wings on",
               
           },{
               id: 2,
               name: "Dolphin",
-              desc: "Dolphins call themselves by name like we do",
+              description: "Dolphins call themselves by name like we do",
               
           }],
           //data: '/ajax/autocomplete/', //jsonData2

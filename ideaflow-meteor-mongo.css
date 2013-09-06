@@ -1,6 +1,8 @@
 /* CSS declarations go here */
 
 
+
+
 /* ===================== Idea List ===================== */
 
 .idea-description {
@@ -37,6 +39,22 @@
 	margin-left: 5px;
 	margin-top: 4px;
 	margin-bottom: 10px;
+
+/*	background-color: #3a87ad;
+  color:#EEE;
+  float:left;
+  font-size:12px;
+  padding:0 5px;
+  border-radius:3px;
+  margin-left:5px;
+  margin-top:4px;
+
+
+	display: inline;
+	line-height: 22px;
+
+	*/
+
 	
 }
 
@@ -45,25 +63,85 @@
 	padding-left: 0px;
 	margin-left: -3px;
 	float:left;
+
+	line-height:22px;
 }
 
 .related-ideas-all {
-	height:25px;
-	width:1000px;
+	height:22px;
+	line-height: 22px;
+/*	width:1000px;*/
 	/*background-color: red; for alignment check*/ 
 }
 
+.related-idea-input > .ms-ctn { /* also .related-idea-add-ms */
+    float: right !important;
+}
+
+
+.related-idea-submit {
+    float: right;
+}
+
+.label-info.expanded, .label-info, .ms-sel-ctn .ms-sel-item {
+  background-color: #3a87ad;
+  color:#EEE;
+  float:left;
+  font-size:12px;
+  padding:0 5px;
+  border-radius:3px;
+  margin-left:5px;
+  margin-top:4px
+
+}
+
+.ms-res-ctn {
+    height: auto !important;
+}
+
+/*
 .related-idea-input {
 	float:right;
-	width:180px;
+	width:227px;
 	height:20px;
 }
 
-.related-idea-input .related-idea-title {
-	width:120px;
+.related-idea-input .related-idea-add {
+	width:220px;
 	
 }
 
+
+.selectedx {
+	float:left;
+}
+
+.ms-res-ctn {
+    height: auto !important;
+}
+
+.ms-ctn {
+	width:300px;
+}
+
+.related-idea-input > .ms-ctn {
+    float: right !important;
+}
+
+
+
+.label-info.expanded, .label-info, .ms-sel-ctn .ms-sel-item {
+  background-color: #3a87ad;
+  color:#EEE;
+  float:left;
+  font-size:12px;
+  padding:0 5px;
+  border-radius:3px;
+  margin-left:5px;
+  margin-top:4px
+
+}
+*/
 
 /* ===================== Page Layout ===================== */
 .page-body {
