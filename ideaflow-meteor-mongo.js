@@ -1,5 +1,6 @@
 Ideas = new Meteor.Collection('ideas');
 
+
 if (Meteor.isClient) {
 
 
@@ -91,6 +92,10 @@ if (Meteor.isClient) {
       }
       // sort here
       return relatedIdeas;
+    },
+    expandedIdea: function(id) {
+      var expandedIdeas = Session.get('expandedIdeas');
+
     }
   })
 
@@ -122,6 +127,7 @@ if (Meteor.isClient) {
     'click .related-ideas >li': function(e) {
       $target = $(e.target);
       var newIdea = Ideas.find($target.data('id')).fetch()[0]
+      Session.set()
       //alert();
       //console.log(newIdea);
       //console.log($target.closest('.main-idea'));
@@ -132,32 +138,32 @@ if (Meteor.isClient) {
   })
 
 
-  Template.ideaList.events({
-    'click .related-idea-submit': function(e) {
-      /*var title = $(e.target).prevAll('.related-idea-add-ms:first input').val();
-      console.log('related idea title:', title);
-*/
+//   Template.ideaList.events({
+//     'click .related-idea-submit': function(e) {
+//       /*var title = $(e.target).prevAll('.related-idea-add-ms:first input').val();
+//       console.log('related idea title:', title);
+// */
       
-      //console.log(x=$(e.target).nextAll('.related-idea-add-ms').first());
-      //console.log($(e.target))
+//       //console.log(x=$(e.target).nextAll('.related-idea-add-ms').first());
+//       //console.log($(e.target))
 
-      var newRelIdeas = $(e.target).nextAll('.related-idea-add-ms').first().magicSuggest().getSelectedItems();
-     // console.log(x=newRelIdeas);
+//       var newRelIdeas = $(e.target).nextAll('.related-idea-add-ms').first().magicSuggest().getSelectedItems();
+//      // console.log(x=newRelIdeas);
 
-      var mainIdeaId = $(e.target).closest('.main-idea').attr('id');
+//       var mainIdeaId = $(e.target).closest('.main-idea').attr('id');
 
-      for(var i=0;i<newRelIdeas.length;i++) {
-        var relatedIdeaId = Ideas.insert({ 
-          title: newRelIdeas[i].name, 
-          description: ''+newRelIdeas[i].description, 
-          relatedIdeas: [],
-          timestamp: Date.now() 
-        });  //#TODO dates server side
-        Ideas.update(mainIdeaId, { $push: {relatedIdeas: relatedIdeaId} })
-      }
+//       for(var i=0;i<newRelIdeas.length;i++) {
+//         var relatedIdeaId = Ideas.insert({ 
+//           title: newRelIdeas[i].name, 
+//           description: ''+newRelIdeas[i].description, 
+//           relatedIdeas: [],
+//           timestamp: Date.now() 
+//         });  //#TODO dates server side
+//         Ideas.update(mainIdeaId, { $push: {relatedIdeas: relatedIdeaId} })
+//       }
 
-    }
-  }
+//     }
+//   }
 
 
 

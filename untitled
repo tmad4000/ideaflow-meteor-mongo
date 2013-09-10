@@ -1,0 +1,13 @@
+Template.idea.events({
+  'click .related-ideas >li': function(e) {
+    $target = $(e.target);
+    var newIdea = Ideas.find($target.data('id')).fetch()[0]
+    Session.set()
+    //alert();
+    //console.log(newIdea);
+    //console.log($target.closest('.main-idea'));
+    //console.log(Template.idea(newIdea));
+    $target.closest('.main-idea').children('.idea-list').append(Template.idea(newIdea));
+    autoSuggest();
+  }
+});

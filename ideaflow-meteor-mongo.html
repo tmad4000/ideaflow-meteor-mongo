@@ -67,10 +67,14 @@
 					<button class='related-idea-submit'>Go</button>	
 					<input class='related-idea-add'>
 				</div>
-									
+
 			</div>
 			
-			<ul class='idea-list'></ul>
+			<ul class='idea-list'>
+						{{#each expandedIdea _id}}
+							<li data-id='{{_id}}'>{{title}}</li>
+						{{/each}}
+			</ul>
 
 
 		</li>
