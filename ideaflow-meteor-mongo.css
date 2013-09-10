@@ -11,18 +11,20 @@
 
 .idea-list {
 	/*padding-left: 1px;*/
-	display: block
+	display: block;
+	padding-top: 10px;
 }
 
 
 .idea-list li { /* all li's in an idea-list */
 	list-style-type: none;
+
 	
 }
 
 
 .idea-list > li { /* specifically the list li's in an idea-list */
-	padding: 0px 4px 20px 4px;
+	/*padding: 0px 4px 20px 4px;*/
 	border-top: solid 1px #CCC;
 }
 
@@ -212,9 +214,9 @@
 
 
 a[name] { /*hack for fixed-position-navbar-obscures-anchors*/
-  padding-top: 40px;
+  /*padding-top: 40px;
   margin-top: -40px;
-  display: inline-block; /* required for webkit browsers */
+  display: inline-block; *//* required for webkit browsers */
 }
 
 
