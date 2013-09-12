@@ -135,7 +135,7 @@ if (Meteor.isClient) {
       $target.closest('.main-idea').children('.idea-list').append(Template.idea(newIdea));
       autoSuggest();
     }
-  })
+  });
 
 
 //   Template.ideaList.events({
@@ -164,10 +164,7 @@ if (Meteor.isClient) {
 
 //     }
 //   }
-
-
-
-  );
+  // );
 
   Template.idea.rendered = function() {
     //console.log("aoeu")
