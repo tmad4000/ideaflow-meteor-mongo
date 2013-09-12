@@ -1,87 +1,100 @@
 Ideas = new Meteor.Collection('ideas');
 
+var msOpts = {
+  cls: 'related-idea-add-ms',
+  selectionCls: 'related-idea-selected-ms',
+  renderer: function(idea){
+      return '<div>' +
+              '<div style="font-family: Arial; font-weight: bold">' + idea.name + '</div>' +
+              '<div><b>Text</b>: ' + idea.description + '</div>' +
+             '</div>';
+  },
+  minChars: 0,
+  typeDelay: 20,
+  selectionStacked: true,
+  method:'GET',
+  expanded:false,
+  expandOnFocus:true,
+  maxDropHeight:'500px',
+  name:'query',
+  data: [{
+      id: 0,
+      name: "Panda",
+      description: "Pandas are great furry animals",
+      
+  },{
+      id: 1,
+      name: "Butterfly",
+      description: "Butterflies fly better with theirs wings on",
+      
+  },{
+      id: 2,
+      name: "Dolphin",
+      description: "Dolphins call themselves by name like we do",
+      
+  },
+  {
+      id: 3,
+      name: "Lion",
+      description: "Females do 85 to 90 percent of the pride's hunting, while the males patrol the territory and protect the pride, for which they take the \"lion's share\" of the females' prey.",
+      
+  },{
+      id: 4,
+      name: "Platypus",
+      description: "A strike from a toxic platypus spur can kill a dog.",
+      
+  },
+  {
+      id: 5,
+      name: "Echidna",
+      description: "The echidna has a long tongue around 18cm long that can whip in and out of its mouth at incredible speeds.",
+      
+  }],
+  //data: '/ajax/autocomplete/', //jsonData2
+  selectionPosition: 'right',
+  emptyText:'Connect related ideas',
+  selectionStacked: true
+};
 
 if (Meteor.isClient) {
+  var autoSuggest = function() {
+        $('.related-idea-add').each(function() {
+          $($(this).magicSuggest(msOpts)).on('selectionchange', function(events, combo, selection) {
+            var newRelIdeas = selection;
+            var mainIdeaId = combo.container.closest('.main-idea').attr('id');
 
-
-  function autoSuggest() {
-         msAutofillInline = $('.related-idea-add').magicSuggest({
-          // selectionPosition: 'right',
-          cls: 'related-idea-add-ms',
-          selectionCls: 'related-idea-selected-ms',
-          renderer: function(idea){
-              //console.log(idea.name)
-              return '<div>' +
-                      '<div style="font-family: Arial; font-weight: bold">' + idea.name + '</div>' +
-                      '<div><b>Text</b>: ' + idea.description + '</div>' +
-                     '</div>';
-          },
-          minChars: 0,
-          typeDelay: 20,
-          selectionStacked: true,
-          method:'GET',
-          expanded:false,
-          expandOnFocus:true,
-          maxDropHeight:'500px',
-          name:'query',
-          data: [{
-              id: 0,
-              name: "Panda",
-              description: "Pandas are great furry animals",
-              
-          },{
-              id: 1,
-              name: "Butterfly",
-              description: "Butterflies fly better with theirs wings on",
-              
-          },{
-              id: 2,
-              name: "Dolphin",
-              description: "Dolphins call themselves by name like we do",
-              
-          }],
-          //data: '/ajax/autocomplete/', //jsonData2
-          selectionPosition: 'right',
-          emptyText:'Connect related ideas',
-          selectionStacked: true
-        });
-
-        $('.related-idea-add-ms').each(function () {
-          var ms = $(this).magicSuggest({});
-          $(ms).on('selectionchange', function(event, combo, selection) {
-
-              var newRelIdeas = selection; //$(e.target).nextAll('.related-idea-add-ms').first().magicSuggest().getSelectedItems();
-             // console.log(x=newRelIdeas);
-
-
-              var mainIdeaId = combo.container.closest('.main-idea').attr('id'); // $(e.target).closest('.main-idea').attr('id');
-
-              for(var i=0;i<newRelIdeas.length;i++) {
-                var relatedIdeaId = Ideas.insert({ title: newRelIdeas[i].name, description: ''+newRelIdeas[i].description, relatedIdeas: [],timestamp:Date.now() });  //#TODO dates server side
-                Ideas.update(mainIdeaId, { $push: {relatedIdeas: relatedIdeaId} })
-              }
-
-
-              //console.log(combo.container.closest('.main-idea').attr('id'));
-
-//              console.log(combo.container);
+            for (var i = 0; i < newRelIdeas.length; i++) {
+                var existingIdea = Ideas.find(newRelIdeas[i].id).fetch()[0]; // see if related idea is already in db
+                var relatedIdeaId;
+                if (!existingIdea) { // if not already in db, insert the idea
+                  relatedIdeaId = Ideas.insert({ title: newRelIdeas[i].name,
+                                                      description: '',
+                                                      relatedIdeas: [],
+                                                      timestamp:Date.now()
+                                                    });  //#TODO dates server side #thereisnoserver
+                } else {
+                  relatedIdeaId = existingIdea._id;
+                }
+                // relate main idea to related idea and vice versa
+                Ideas.update(mainIdeaId, { $push: { relatedIdeas: relatedIdeaId } });
+                Ideas.update(relatedIdeaId, { $push: { relatedIdeas: mainIdeaId } });
+            }
           });
         });
-
   }
 
+  /////// IDEALIST TEMPLATE ////////
   Template.ideaList.helpers({
     idea: function() {
-//      return Ideas.find().fetch();
       return Ideas.find({}, {sort: {timestamp: -1}}).fetch();
-//TODO: reverse order
-
-//      return Ideas.find({}, {sort: {$natural: 1}}).fetch();
-//      return Ideas.find({}, {sort: {timestamp: -1}}).fetch();
-    },
-
+    }
   });
 
+  Template.ideaList.rendered = function() {
+    autoSuggest(); // attach magicsuggest to 
+  };
+
+  /////// IDEA TEMPLATE ////////
   Template.idea.helpers({
     relatedIdea: function(id) {
       var relatedIdeas = [];
@@ -99,21 +112,24 @@ if (Meteor.isClient) {
     }
   })
 
+  Template.idea.events({
+    'click .related-ideas > li': function(e) {
+      $target = $(e.target);
+      var newIdea = Ideas.find($target.data('id')).fetch()[0]
+      Session.set()
+      $target.closest('.main-idea').children('.idea-list').prepend(Template.idea(newIdea));
+      autoSuggest();
+    }
+  });
+  
+  /////// IDEA NAMES LIST TEMPLATE ////////
   Template.ideaNamesList.helpers({
     idea: function() {
-//      return Ideas.find().fetch();
       return Ideas.find({}, {sort: {timestamp: -1}}).fetch();
-//TODO: reverse order
-
-//      return Ideas.find({}, {sort: {$natural: 1}}).fetch();
-//      return Ideas.find({}, {sort: {timestamp: -1}}).fetch();
     },
-   
-    
   });
 
-
-
+  /////// IDEA INPUT TEMPLATE ////////
   Template.ideaInput.events({
     'click .idea-submit, keypress .' : function () {
       var title = $('.idea-title').val();
@@ -121,60 +137,10 @@ if (Meteor.isClient) {
       Ideas.insert({ title: title, description: description, relatedIdeas: [],timestamp:Date.now() }); //#TODO dates server side
     }
   });
-
-
-  Template.idea.events({
-    'click .related-ideas >li': function(e) {
-      $target = $(e.target);
-      var newIdea = Ideas.find($target.data('id')).fetch()[0]
-      Session.set()
-      //alert();
-      //console.log(newIdea);
-      //console.log($target.closest('.main-idea'));
-      //console.log(Template.idea(newIdea));
-      $target.closest('.main-idea').children('.idea-list').append(Template.idea(newIdea));
-      autoSuggest();
-    }
-  });
-
-
-//   Template.ideaList.events({
-//     'click .related-idea-submit': function(e) {
-//       /*var title = $(e.target).prevAll('.related-idea-add-ms:first input').val();
-//       console.log('related idea title:', title);
-// */
-      
-//       //console.log(x=$(e.target).nextAll('.related-idea-add-ms').first());
-//       //console.log($(e.target))
-
-//       var newRelIdeas = $(e.target).nextAll('.related-idea-add-ms').first().magicSuggest().getSelectedItems();
-//      // console.log(x=newRelIdeas);
-
-//       var mainIdeaId = $(e.target).closest('.main-idea').attr('id');
-
-//       for(var i=0;i<newRelIdeas.length;i++) {
-//         var relatedIdeaId = Ideas.insert({ 
-//           title: newRelIdeas[i].name, 
-//           description: ''+newRelIdeas[i].description, 
-//           relatedIdeas: [],
-//           timestamp: Date.now() 
-//         });  //#TODO dates server side
-//         Ideas.update(mainIdeaId, { $push: {relatedIdeas: relatedIdeaId} })
-//       }
-
-//     }
-//   }
-  // );
-
-  Template.idea.rendered = function() {
-    //console.log("aoeu")
-    autoSuggest();
-  }
 }
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
 
-  });''
+  });
 }
-        

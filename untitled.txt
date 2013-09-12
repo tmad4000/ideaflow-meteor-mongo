@@ -11,3 +11,31 @@ Template.idea.events({
     autoSuggest();
   }
 });
+
+//   Template.ideaList.events({
+//     'click .related-idea-submit': function(e) {
+//       /*var title = $(e.target).prevAll('.related-idea-add-ms:first input').val();
+//       console.log('related idea title:', title);
+// */
+      
+//       //console.log(x=$(e.target).nextAll('.related-idea-add-ms').first());
+//       //console.log($(e.target))
+
+//       var newRelIdeas = $(e.target).nextAll('.related-idea-add-ms').first().magicSuggest().getSelectedItems();
+//      // console.log(x=newRelIdeas);
+
+//       var mainIdeaId = $(e.target).closest('.main-idea').attr('id');
+
+//       for(var i=0;i<newRelIdeas.length;i++) {
+//         var relatedIdeaId = Ideas.insert({ 
+//           title: newRelIdeas[i].name, 
+//           description: ''+newRelIdeas[i].description, 
+//           relatedIdeas: [],
+//           timestamp: Date.now() 
+//         });  //#TODO dates server side
+//         Ideas.update(mainIdeaId, { $push: {relatedIdeas: relatedIdeaId} })
+//       }
+
+//     }
+//   }
+  // );
