@@ -26,7 +26,6 @@
 		</ul>
 
 		<div class='related-idea-input'>
-			<button class='related-idea-submit'>Go</button>	
 			<input class='related-idea-add' width="400">
 		</div>
 
@@ -44,7 +43,7 @@
 </template>
 
 <template name="idea">
-	<li class='main-idea' id='{{_id}}'>
+	<li class='main-idea' data-id='{{_id}}'>
 
 			<div class='idea-text'>
 				<a name="{{_id}}" >{{title}}</a>: {{description}}
@@ -58,23 +57,43 @@
 				</ul>
 
 				<div class='related-idea-input'>
-					<button class='related-idea-submit'>Go</button>	
 					<input class='related-idea-add'>
 				</div>
 			</div>
 			
 			<ul class='idea-list'>
-				{{#each expandedChildren _id}}
-					{{> idea}}
+				{{#each expandedChild _id}}
+					Expanded Idea: {{> expandedIdea}}
 				{{/each}}
 			</ul>
 
 		</li>
 </template>
 
+<template name="expandedIdea">
+	<li class='expandeds-idea' data-id='{{_id}}'>
+
+			<div class='idea-text'>
+				<a name="{{_id}}">{{title}}</a>: {{description}}
+			</div>
+
+			<div class='related-ideas-all'>
+				<ul class='related-ideas'>
+					{{#each relatedIdea _id}}			
+						<li data-id='{{_id}}'>{{title}}</li>
+					{{/each}}		
+				</ul>
+
+				<div class='related-idea-input'>
+					<input class='related-idea-add'>
+				</div>
+			</div>
+		</li>
+</template>
+
 
 <template name='ideaNamesList'>
-	<ul id='idea-names-list'>
+	<div id='idea-names-list'>
 		<h3>Ideas</h3>
 		<ul>
 			{{#each idea}}
