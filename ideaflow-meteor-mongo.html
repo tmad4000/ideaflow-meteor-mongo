@@ -64,9 +64,9 @@
 			</div>
 			
 			<ul class='idea-list'>
-				<!-- {{#each expandedIdea _id}}
-					<li data-id='{{_id}}'>{{title}}</li>
-				{{/each}} -->
+				{{#each expandedChildren _id}}
+					{{> idea}}
+				{{/each}}
 			</ul>
 
 		</li>
