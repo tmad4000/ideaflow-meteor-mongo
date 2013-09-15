@@ -3,6 +3,41 @@
 </head>
 
 <body>
+	{{> body}}
+</body>
+
+<template name="body">
+  {{renderPage}}
+</template>
+
+<template name="ideaMapIndex">
+	<div id="navbar-fixed-top"><h1>IdeaFlow</h1></div>
+	<div class="page-body">
+		<div class="add-idea-map">
+			{{> ideaMapInput}}
+		</div>
+
+		{{> ideaMapList}}		
+	</div>
+</template>
+
+
+<template name="ideaMapInput">
+	<input class='map-title' placeholder='New Map Title'>
+	<button class='map-submit'>Add New Map</button>
+</template>
+
+
+<template name="ideaMapList">
+	<ul> 
+		{{#each ideaMaps}}
+			<li> <a href='{{url}}'> {{title}} </a> </li>
+		{{/each}} 
+	</ul>
+</template>
+
+
+<template name="ideaMap">
 	<div id="navbar-fixed-top"><h1>IdeaFlow</h1></div>
 	<div class="page-body">
 		<div class="add-idea-input">
@@ -12,7 +47,7 @@
 		{{> ideaList}}
 		{{> ideaNamesList}}
 	</div>
-</body>
+</template>
 
 <template name='ideaInput'>
 	<input class='idea-title' placeholder='New Idea Title'>

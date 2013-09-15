@@ -31,6 +31,6 @@ if (Ideas.find().fetch().length === 0) {
 		Ideas.insert({title: data[i].title,
 	                  description: data[i].description,
 	                  relatedIdeas: [],
-	                  timestamp:Date.now()});
+	                  timestamp: Date.now()});
 	}
 }

@@ -1,6 +1,31 @@
 
 
 if (Meteor.isClient) {
+  Meteor.Router.add({
+    '/': 'ideaMap',
+    '/index': 'ideaMapIndex'
+  //   '/:ideamapname': function(ideamapname) {
+  //   var idea = Ideas.findOne({title: ideamapname});
+  //   Session.set('ideaFromUrl', idea);
+  //   // Now your restaurant is in the "restaurantFromUrl" Session
+  //   return 'restaurantPage';
+  // }
+
+  });
+
+  // Template.body.helpers({
+  //   layoutName: function() {
+  //     switch (Meteor.Router.page()) {
+  //       case 'ideaMapIndex':
+  //         return 'adminLayout';
+  //       case 'userPage':
+  //         return 'userLayout';
+  //       default:
+  //         return 'userLayout';
+  //     }
+  //   }
+  // });
+
   var getMagicSuggestOptions = function() {
       return {
         cls: 'related-idea-add-ms',
@@ -131,12 +156,41 @@ if (Meteor.isClient) {
     },
   });
 
+  //////
+  Template.ideaMapList.ideaMaps = function () {
+    return IdeaMaps.find().fetch();
+  };
+
   /////// IDEA INPUT TEMPLATE ////////
   Template.ideaInput.events({
-    'click .idea-submit, keypress .' : function () {
+    'click .idea-submit' : function () {
       var title = $('.idea-title').val();
       var description = $('.idea-description').val();
       Ideas.insert({ title: title, description: description, relatedIdeas: [],timestamp:Date.now() }); //#TODO dates server side
+    }
+  });
+
+  var stringToUrl = function(text) {
+    return JSON.stringify(text).replace(/\W/g, '').toLowerCase();
+  }
+
+  ////// MAP INPUT TEMPLATE ///////
+  Template.ideaMapInput.events({
+    'click .map-submit' : function () {
+      var mapTitle = $('.map-title').val();
+      var mapUrl = stringToUrl(mapTitle);
+      if(mapTitle !== undefined || "") {
+        var collsion = IdeaMaps.find({url: mapUrl}).fetch();
+        if (collsion.length !== 0) {
+          alert('map ' + mapTitle + ' already exists! url: ' + mapUrl);
+        } else {
+          IdeaMaps.insert({ title: mapTitle, url: mapUrl });
+          $('.map-title').val('');
+        }
+      }
+      
+       //#TODO dates server side
+
     }
   });
 }

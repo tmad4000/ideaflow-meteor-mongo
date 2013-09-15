@@ -1,0 +1,1 @@
+IdeaMaps = new Meteor.Collection('idea-maps');
