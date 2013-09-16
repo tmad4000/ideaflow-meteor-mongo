@@ -1,0 +1,141 @@
+<head>
+  <title>IdeaFlow</title>
+</head>
+
+<body>
+	{{> body}}
+</body>
+
+<template name="body">
+  {{renderPage}}
+</template>
+
+<template name="ideaMapIndex">
+	<div id="navbar-fixed-top"><h1>IdeaFlow</h1></div>
+	<div class="page-body">
+		<div class="add-idea-map">
+			{{> ideaMapInput}}
+		</div>
+
+		{{> ideaMapList}}		
+	</div>
+</template>
+
+
+<template name="ideaMapInput">
+	<input class='map-title' placeholder='New Map Title'>
+	<button class='map-submit'>Add New Map</button>
+</template>
+
+
+<template name="ideaMapList">
+	<ul> 
+		{{#each ideaMaps}}
+			<li> <a href='{{url}}'> {{title}} </a> </li>
+		{{/each}} 
+	</ul>
+</template>
+
+
+<template name="ideaMap">
+	<div id="navbar-fixed-top"><h1>IdeaFlow</h1></div>
+	<div class="page-body">
+		<div class="add-idea-input">
+			{{> ideaInput}}
+		</div>
+
+		{{> ideaList}}
+		{{> ideaNamesList}}
+	</div>
+</template>
+
+<template name='ideaInput'>
+	<input class='idea-title' placeholder='New Idea Title'>
+	<textarea class='idea-description' placeholder='New Idea Description'></textarea>
+
+	<div class='related-ideas-all'>
+		<ul class='related-ideas'>
+			{{# each relatedIdea _id}}					
+				<li>{{title}}</li>
+			{{/each}}
+		</ul>
+
+		<div class='related-idea-input'>
+			<input class='related-idea-add' width="400">
+		</div>
+
+	</div>
+
+	<button class='idea-submit'>Add New Idea</button>
+</template>
+
+<template name='ideaList'>
+	<ul class='idea-list'>
+		{{#each idea}}
+				{{> idea}}
+		{{/each}}
+	</ul>
+</template>
+
+<template name="idea">
+	<li class='main-idea' data-id='{{_id}}'>
+
+			<div class='idea-text'>
+				<a name="{{_id}}" >{{title}}</a>: {{description}}
+			</div>
+
+			<div class='related-ideas-all'>
+				<ul class='related-ideas'>
+					{{#each relatedIdea _id}}					
+						<li data-id='{{_id}}'>{{title}}</li>
+					{{/each}}		
+				</ul>
+
+				<div class='related-idea-input'>
+					<input class='related-idea-add'>
+				</div>
+			</div>
+			
+			<ul class='idea-list'>
+				{{#each expandedChild _id}}
+					Expanded Idea: {{> expandedIdea}}
+				{{/each}}
+			</ul>
+
+		</li>
+</template>
+
+<template name="expandedIdea">
+	<li class='expandeds-idea' data-id='{{_id}}'>
+
+			<div class='idea-text'>
+				<a name="{{_id}}">{{title}}</a>: {{description}}
+			</div>
+
+			<div class='related-ideas-all'>
+				<ul class='related-ideas'>
+					{{#each relatedIdea _id}}			
+						<li data-id='{{_id}}'>{{title}}</li>
+					{{/each}}		
+				</ul>
+
+				<div class='related-idea-input'>
+					<input class='related-idea-add'>
+				</div>
+			</div>
+		</li>
+</template>
+
+
+<template name='ideaNamesList'>
+	<div id='idea-names-list'>
+		<h3>Ideas</h3>
+		<ul>
+			{{#each idea}}
+				<li>
+					<a href="#{{_id}}">{{title}}</a>
+				</li>
+			{{/each}}
+		</ul>
+	</div>
+</template>
