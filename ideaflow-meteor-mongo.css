@@ -1,6 +1,12 @@
 /* CSS declarations go here */
 
+/* ===================== START doneBefore ===================== */
 
+.done-before > input {
+	width: 500px;
+}
+
+/* ===================== END doneBefore ===================== */
 
 
 /* ===================== Idea List ===================== */
