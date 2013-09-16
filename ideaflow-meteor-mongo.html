@@ -10,6 +10,48 @@
   {{renderPage}}
 </template>
 
+
+
+<!-- START doneBefore -->
+<template name="doneBefore">
+	<div id="navbar-fixed-top"><h1>IdeaFlow</h1></div>
+
+	<div class="page-body">
+		<h2>Has Your Idea Been Done Before?</h2>
+		{{> doneBeforeInput}}
+		{{> doneBeforeList}}
+	</div>
+</template>
+
+
+<template name="doneBeforeInput">
+	<div class="done-before">
+		<input class='idea-query' placeholder='Type your idea...'>
+		<button class='submit'>Find Related!</button>
+	</div>
+</template>
+
+
+<template name="doneBeforeList">
+	{{#if doneBeforeResult.error}}
+		{{doneBeforeResult.error}}
+	{{else}}
+
+	<ul> 
+		{{#each doneBeforeResult}}
+
+			<li> <a href='#'> {{title}}</a>: {{description}}</li>
+		{{/each}} 
+	</ul>
+				
+	{{/if}}
+</template>
+
+
+<!-- END doneBefore -->
+
+
+<!-- START ideaMapIndex -->
 <template name="ideaMapIndex">
 	<div id="navbar-fixed-top"><h1>IdeaFlow</h1></div>
 	<div class="page-body">
@@ -36,7 +78,10 @@
 	</ul>
 </template>
 
+<!-- END ideaMapIndex -->
 
+
+<!-- START ideaMap -->
 <template name="ideaMap">
 	<div id="navbar-fixed-top"><h1>IdeaFlow</h1></div>
 	<div class="page-body">
@@ -139,3 +184,5 @@
 		</ul>
 	</div>
 </template>
+
+<!-- END ideaMap -->

@@ -3,7 +3,8 @@
 if (Meteor.isClient) {
   Meteor.Router.add({
     '/': 'ideaMap',
-    '/index': 'ideaMapIndex'
+    '/index': 'ideaMapIndex',
+    '/donebefore': 'doneBefore'
   //   '/:ideamapname': function(ideamapname) {
   //   var idea = Ideas.findOne({title: ideamapname});
   //   Session.set('ideaFromUrl', idea);
@@ -160,6 +161,39 @@ if (Meteor.isClient) {
   Template.ideaMapList.ideaMaps = function () {
     return IdeaMaps.find().fetch();
   };
+
+
+  /////// doneBefore TEMPLATE ////////
+  Template.doneBefore.events({
+    'click .submit' : function () {
+      
+
+      var ideaQuery = $('.idea-query').val();
+      var result=Ideas.find({
+        $or:[
+        {title: {$regex:('.*'+ideaQuery+'.*'),$options:'i'}},
+         {description: {$regex:('.*'+ideaQuery+'.*'),$options:'i'}}
+        ]
+      }).fetch(); 
+
+      if (result.length == 0){
+        result={error:'None found'};
+       }
+
+      Session.set('queryResult',result);
+      
+      //console.log(result)
+      //return result;
+
+    },
+  });
+
+  Template.doneBeforeList.doneBeforeResult= function() {
+   // console.log(Session.get('queryResult').error)
+      return Session.get('queryResult')
+    };
+
+
 
   /////// IDEA INPUT TEMPLATE ////////
   Template.ideaInput.events({
