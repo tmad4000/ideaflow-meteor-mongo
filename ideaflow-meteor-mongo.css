@@ -9,6 +9,31 @@
 /* ===================== END doneBefore ===================== */
 
 
+/* ===================== START instaquote ===================== */
+
+.instaquote ul.sugg, .instaquote ul.sugg > li {
+	background-color: #e3ebee; /* #d8e4e8 */
+}
+
+.instaquote .list li {
+	font-family: serif;
+}
+
+.search-add {
+	width:300px; height:30px; position:relative; top: 0; left: 0;
+}
+/*
+.instaquote div.search-add > .sugg {
+	width:300px; height:30px; position:absolute; top: 0; left: 0; z-index:1; color:#aaaaaa; background:transparent; 
+
+}
+
+.instaquote div.search-add > .text {
+	z-index: 200; width:300px; height:30px; position:absolute; top: 0; left: 0; z-index:2; background: transparent; 
+}*/
+
+/* ===================== END instaquote ===================== */
+
 /* ===================== Idea List ===================== */
 
 .idea-description {

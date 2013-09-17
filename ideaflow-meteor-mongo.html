@@ -51,6 +51,100 @@
 <!-- END doneBefore -->
 
 
+<!-- START instaquote -->
+<template name="instaquote">
+<div class="instaquote">
+	<div class="page-body">
+		<h2>Instaquote</h2>
+		{{> instaquoteInput}}
+		{{> instaquoteList}}
+	</div>
+</div>
+</template>
+
+
+<template name="instaquoteInput">
+	<div class="instaquote-input">
+
+		<div class="search-add">
+			<input class='text' placeholder='Start typing quote'>
+			<div class="sugg" value="" disabled="disabled">{{> instaquoteSugg}}</div>
+		</div>
+
+
+		{{> instaquoteSuggBelow}}
+		
+	</div>
+</template>
+
+
+<template name="instaquoteList">
+	<ul class="list"> 
+		{{#each quote}}
+			<li>{{text}}</li>
+		{{/each}} 
+	</ul>
+</template>
+
+
+<template name="instaquoteSugg">
+	<div class="sugg"> 
+		{{instaquoteSugg}}
+	</div>
+</template>
+
+<template name="instaquoteSuggAbove">
+	<ul class="sugg"> 
+		{{#each instaquoteSuggAbove}}
+			<li>{{description}}</li>
+		{{/each}} 
+	</ul>
+</template>
+
+<template name="instaquoteSuggBelow">
+	<ul class="sugg"> 
+		{{#each instaquoteSuggBelow}}
+			<li>{{description}}</li>
+		{{/each}} 
+	</ul>
+</template>
+
+
+<!-- END instaquote -->
+
+
+
+<!-- START votebox -->
+<template name="votebox">
+<div class="votebox">
+	<div class="page-body">
+		<h2>votebox</h2>
+		{{> voteboxInput}}
+		{{> voteboxList}}
+	</div>
+</div>
+</template>
+
+
+<template name="voteboxInput">
+	<input class='text' placeholder='Start typing idea'>
+</template>
+
+
+<template name="voteboxList">
+	<ul class="list"> 
+		{{#each idea}}
+			<li><div class="status"></div><div class="votes"></div><div class="idea-txt"><a name="{{_id}}">{{title}}</a>: {{description}}</div><div class="uid"></div><div class="timestamp"></div></li>
+		{{/each}} 
+	</ul>
+
+</template>
+
+
+<!-- END votebox -->
+
+
+
 <!-- START ideaMapIndex -->
 <template name="ideaMapIndex">
 	<div id="navbar-fixed-top"><h1>IdeaFlow</h1></div>
@@ -151,7 +245,7 @@
 </template>
 
 <template name="expandedIdea">
-	<li class='expandeds-idea' data-id='{{_id}}'>
+	<li class='expanded-idea' data-id='{{_id}}'>
 
 			<div class='idea-text'>
 				<a name="{{_id}}">{{title}}</a>: {{description}}

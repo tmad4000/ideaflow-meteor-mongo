@@ -4,7 +4,9 @@ if (Meteor.isClient) {
   Meteor.Router.add({
     '/': 'ideaMap',
     '/index': 'ideaMapIndex',
-    '/donebefore': 'doneBefore'
+    '/donebefore': 'doneBefore',
+    '/instaquote': 'instaquote',
+    '/votebox': 'votebox',
   //   '/:ideamapname': function(ideamapname) {
   //   var idea = Ideas.findOne({title: ideamapname});
   //   Session.set('ideaFromUrl', idea);
@@ -165,16 +167,18 @@ if (Meteor.isClient) {
 
   /////// doneBefore TEMPLATE ////////
   Template.doneBefore.events({
-    'click .submit' : function () {
+    'keyup .idea-query' : function () { //'click .submit'
       
 
       var ideaQuery = $('.idea-query').val();
       var result=Ideas.find({
         $or:[
         {title: {$regex:('.*'+ideaQuery+'.*'),$options:'i'}},
-         {description: {$regex:('.*'+ideaQuery+'.*'),$options:'i'}}
+//         {description: {$regex:('.*'+ideaQuery+'.*'),$options:'i'}}
         ]
       }).fetch(); 
+
+
 
       if (result.length == 0){
         result={error:'None found'};
@@ -192,6 +196,128 @@ if (Meteor.isClient) {
    // console.log(Session.get('queryResult').error)
       return Session.get('queryResult')
     };
+
+
+  /////// instaquote TEMPLATE ////////
+  Template.instaquote.events({
+    'keyup .text' : function (e) {
+      
+
+      var text = $(e.target).val();
+      var result=Ideas.find({description: {$regex:('.*'+text+'.*'),$options:'i'}},{limit:5 }).fetch(); 
+      //console.log(result)
+
+      if (e.which === 13) { // enter
+
+            if(text !== undefined || "") {
+              var collision = QuotesLists.find({text: text}).fetch();
+              if (collision.length !== 0) {
+                alert('quote ' + text + ' already exists!' );
+              } else {
+                QuotesLists.insert({ text: text });
+                $(e.target).val("");
+              }
+            }
+      }
+
+
+      for(var i=result.length;i<5;i++) {
+        result[i]={description:''}
+      }
+
+      Session.set('queryResult',result);
+      
+      console.log(result)
+      //return result;
+
+    },
+
+
+
+  });
+
+  Template.instaquoteSugg.instaquoteSugg= function() {
+
+   // console.log(Session.get('queryResult').error)
+      var s=Session.get('queryResult') || []
+      if(s.length>0)
+        return s[0].description
+      else
+        return ''
+    };
+
+  Template.instaquoteSuggAbove.instaquoteSuggAbove= function() {
+    
+   // console.log(Session.get('queryResult').error)
+      return Session.get('queryResult')
+    };
+
+  Template.instaquoteSuggBelow.instaquoteSuggBelow= function() {
+   // console.log(Session.get('queryResult').error)
+      return Session.get('queryResult')
+    };
+
+
+  Template.instaquoteList.quote= function() {
+   // console.log(Session.get('queryResult').error)
+      return QuotesLists.find().fetch()
+    };
+
+
+
+
+
+
+  /////// votebox TEMPLATE ////////
+  Template.votebox.events({
+    'keyup .text' : function (e) {
+      
+
+      var text = $(e.target).val();
+
+      if (e.which === 13) { // enter
+
+            if(text !== undefined || "") {
+              var collision = Ideas.find({description: text}).fetch();
+              if (collision.length !== 0) {
+                alert('Idea ' + text + ' already exists!' );
+              } else {
+                Ideas.insert({ description: text });
+                $(e.target).val("");
+                text ="";
+              }
+
+            }
+      }
+
+      
+//      var result=Ideas.find({description: {$regex:('.*'+text+'.*'),$options:'i'}}).fetch(); 
+      var result=Ideas.find({            
+        $or:[
+          {title: {$regex:('.*'+text+'.*'),$options:'i'}},
+           {description: {$regex:('.*'+text+'.*'),$options:'i'}}
+          ]
+      }, {sort: { _id : -1 }}).fetch(); 
+
+
+
+      Session.set('queryResult',result);
+      
+      //return result;
+
+    },
+
+  });
+      
+
+  Template.voteboxList.idea= function() {
+   // console.log(Session.get('queryResult').error)
+//Session.setDefault('queryResult',Ideas.find({}, {sort: { _id : -1 }}).fetch());
+
+      return Session.get('queryResult')
+
+    };
+
 
 
 
