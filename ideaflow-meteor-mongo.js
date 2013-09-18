@@ -7,6 +7,9 @@ if (Meteor.isClient) {
     '/donebefore': 'doneBefore',
     '/instaquote': 'instaquote',
     '/votebox': 'votebox',
+    '/outlinr': 'outlinr',
+    '/thoughtstream': 'thoughtstream',
+
   //   '/:ideamapname': function(ideamapname) {
   //   var idea = Ideas.findOne({title: ideamapname});
   //   Session.set('ideaFromUrl', idea);
@@ -15,6 +18,8 @@ if (Meteor.isClient) {
   // }
 
   });
+
+
 
   // Template.body.helpers({
   //   layoutName: function() {
@@ -152,20 +157,25 @@ if (Meteor.isClient) {
     }
   });
   
-  /////// IDEA NAMES LIST TEMPLATE ////////
+  ///////START IDEA NAMES LIST TEMPLATE ////////
   Template.ideaNamesList.helpers({
     idea: function() {
       return Ideas.find({}, {sort: {timestamp: -1}}).fetch();
     },
   });
+  ///////END IDEA NAMES LIST TEMPLATE ////////
 
-  //////
+  //////START ideaMaps TEMPLATE ///////////
   Template.ideaMapList.ideaMaps = function () {
     return IdeaMaps.find().fetch();
   };
+  //////END ideaMaps TEMPLATE ///////////
 
 
-  /////// doneBefore TEMPLATE ////////
+
+
+
+  ///////START doneBefore TEMPLATE ////////
   Template.doneBefore.events({
     'keyup .idea-query' : function () { //'click .submit'
       
@@ -196,9 +206,41 @@ if (Meteor.isClient) {
    // console.log(Session.get('queryResult').error)
       return Session.get('queryResult')
     };
+  ///////END doneBefore TEMPLATE ////////
 
 
-  /////// instaquote TEMPLATE ////////
+  ///////START thoughtstream TEMPLATE ////////
+  //Meteor #tutorial: http://www.skalb.com/2012/04/16/creating-a-document-sharing-site-with-meteor-js/
+
+  Template.thoughtstream.events({
+    'keyup .input > .text' : function (e) { //'click .submit'
+    
+      var text = $(e.target).text();
+      result=text.replace("aoe","htn")
+
+      Session.set('queryResult',result);
+      
+      //console.log(result)
+      //return result;
+
+    },
+  });
+
+  Template.thoughtstreamInput.thoughtstream= function() {
+   // console.log(Session.get('queryResult').error)
+      
+      return Session.get('queryResult')
+    };
+
+  Template.thoughtstreamInput.rendered= function() {
+   // console.log(Session.get('queryResult').error)
+      return Session.get('cursor')
+    };
+  ///////END thoughtstream TEMPLATE ////////
+
+
+
+  ///////START instaquote TEMPLATE ////////
   Template.instaquote.events({
     'keyup .text' : function (e) {
       
@@ -262,13 +304,13 @@ if (Meteor.isClient) {
    // console.log(Session.get('queryResult').error)
       return QuotesLists.find().fetch()
     };
+    ///////END instaquote TEMPLATE ////////
 
 
 
 
 
-
-  /////// votebox TEMPLATE ////////
+  ///////START votebox TEMPLATE ////////
   Template.votebox.events({
     'keyup .text' : function (e) {
       
@@ -311,17 +353,18 @@ if (Meteor.isClient) {
       
 
   Template.voteboxList.idea= function() {
-   // console.log(Session.get('queryResult').error)
-//Session.setDefault('queryResult',Ideas.find({}, {sort: { _id : -1 }}).fetch());
+     // console.log(Session.get('queryResult').error)
+    //Session.setDefault('queryResult',Ideas.find({}, {sort: { _id : -1 }}).fetch());
 
       return Session.get('queryResult')
 
     };
+  ///////END votebox TEMPLATE ////////
 
 
 
 
-  /////// IDEA INPUT TEMPLATE ////////
+  ///////START IDEA INPUT TEMPLATE ////////
   Template.ideaInput.events({
     'click .idea-submit' : function () {
       var title = $('.idea-title').val();
@@ -333,8 +376,11 @@ if (Meteor.isClient) {
   var stringToUrl = function(text) {
     return JSON.stringify(text).replace(/\W/g, '').toLowerCase();
   }
+  ///////END START IDEA INPUT TEMPLATE ////////
 
-  ////// MAP INPUT TEMPLATE ///////
+
+
+  //////START MAP INPUT TEMPLATE ///////
   Template.ideaMapInput.events({
     'click .map-submit' : function () {
       var mapTitle = $('.map-title').val();
@@ -353,9 +399,77 @@ if (Meteor.isClient) {
 
     }
   });
+  //////END MAP INPUT TEMPLATE ///////
+
+
+
+  //////START outlinr TEMPLATE ///////////
+  Template.outlinrList.gestalt = function () {
+    return Ideas.find({}, {sort: { timestamp : -1 }}).fetch();
+    // return Ideas.find({}, {sort: { _id : 1 }}).fetch();
+  };
+
+    Template.outlinrInput.events({
+    'click .submit' : function () {
+
+      var text = $('.input > .text').val();
+
+      var titleDesc=extractIdeaNameDesc(text);
+
+     
+
+      if(text !== undefined || "") {
+
+          // Ideas.insert({ title:titleDesc[0], description:titleDesc[1], text:text, status:0, votes:0, creator:'anon' });
+          Meteor.call("addItem",{ title:titleDesc[0], description:titleDesc[1], text:text, status:0, votes:0, creator:'anon' });
+          $('.input > .text').val('');
+      }
+
+    }
+  });
+
+
+  Template.outlinrList.helpers({
+      created: function() { 
+          var time = this.timestamp;
+          if(time instanceof Date)
+            return time.toDateString()
+  
+          return time
+      }
+  }); 
+
+  //////END outlinr TEMPLATE ///////////
+
+
+
+
+  function extractIdeaNameDesc(idea) {
+      var TITLE_MAX_LEN=50;
+      var TITLE_DELIM="--";
+
+      idea=idea.trim();
+
+      i=idea.substr(0,TITLE_MAX_LEN).indexOf(TITLE_DELIM);
+
+      if(i<0) i=TITLE_MAX_LEN;
+
+      return [idea.substr(0,i).trim(),idea.substr(i+TITLE_DELIM.length).trim()];
+  }
+
+
+
 }
 
 if (Meteor.isServer) {
+
+    Meteor.methods({
+    addItem: function (doc) {
+      doc.timestamp = new Date;
+      return Ideas.insert(doc);
+    }
+  });
+
   Meteor.startup(function () {
 
   });
