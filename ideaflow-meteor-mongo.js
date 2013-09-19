@@ -380,7 +380,6 @@ if (Meteor.isClient) {
   ///////END START IDEA INPUT TEMPLATE ////////
 
 
-
   //////START MAP INPUT TEMPLATE ///////
   Template.ideaMapInput.events({
     'click .map-submit' : function () {
@@ -414,6 +413,22 @@ if (Meteor.isClient) {
       return Session.get("outlinrVoteOn-"+id) ? "on" : "";
       // return Ideas.find({}, {sort: { _id : 1 }}).fetch();
   };
+
+
+  Template.outlinrGestalt.statusMsg = function () {
+      var statusTable={0:"Not acknowledged",1:"Acknowledged",2:"In Progress", 3:"Done"}; 
+      
+      return statusTable[(this.status+0)];
+  };
+
+
+  Template.outlinrGestalt.created = function() { 
+      var time = this.timestamp;
+      if(time instanceof Date)
+        return time.toDateString();
+
+      return time;
+  }; 
 
 
   Template.outlinrInput.events({
@@ -454,27 +469,9 @@ if (Meteor.isClient) {
   //      target.children('.vote').removeClass('on');
         Ideas.update({ _id: id }, { $inc: { 'votes': -1 } });
       }
-
-
     }
-
-
-
   });
 
-
-
-
-
-  Template.outlinrList.helpers({
-      created: function() { 
-          var time = this.timestamp;
-          if(time instanceof Date)
-            return time.toDateString();
-  
-          return time;
-      }
-  }); 
 
 
 
