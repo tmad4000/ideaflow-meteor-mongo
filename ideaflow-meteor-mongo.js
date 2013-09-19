@@ -511,11 +511,13 @@ if (Meteor.isClient) {
       
     if(!doc.creator)
       doc.creator='anon';
+
+    if(!doc.relatedIdeas)
+      doc.relatedIdeas=[];
         
     return Meteor.call("addIdea",doc); 
   }
 
-  window.a=addNewIdea
 
 
 }

@@ -34,12 +34,34 @@ if (Ideas.find().fetch().length === 0) {
 	  }];
 
 	for (var i = 0; i < data.length; i++) {
-		Ideas.insert({
+		var doc = {
 	      title: data[i].title,
 	      description: data[i].description,
-	      text:data[i].text, status:data[i].status, votes:data[i].votes, creator:data[i].creator,
-	                  
+	      text:data[i].text ? data[i].text : data[i].title+data[i].description,
+	       status:data[i].status, votes:data[i].votes, creator:data[i].creator,
 	                  relatedIdeas: [],
-	                  timestamp: Date.now()});
+	                  timestamp: Date.now()}
+
+
+	if(!doc.title && !doc.description) {
+      var titleDesc=extractIdeaNameDesc(doc.text);
+      doc.title=titleDesc[0]
+      doc.description=titleDesc[1]
+    }
+
+    if(!doc.status)
+      doc.status=0;
+
+    if(!doc.votes)
+      doc.votes=0;
+      
+    if(!doc.creator)
+      doc.creator='anon';
+
+    if(!doc.relatedIdeas)
+      doc.relatedIdeas=[];
+
+
+		Ideas.insert(doc);
 	}
 }
