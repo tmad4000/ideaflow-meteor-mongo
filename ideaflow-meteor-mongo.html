@@ -7,7 +7,7 @@
 </body>
 
 <template name="body">
-  {{renderPage}}
+{{renderPage}}
 </template>
 
 
@@ -202,14 +202,20 @@
 		{{#each gestalt}}
 			<li>
 				<div class="status"><div class="status-circle sc{{status}}"></div></div>
-				<div class="votes"><span class="vote"> </span><span class="votes">{{votes}}</span></div>
-				<div class="idea-txt"><a name="{{_id}}">{{title}}</a>{{#if description}} -- {{description}}{{/if}}</div>
+				{{> outlinrVotes}}
+				<div class="idea-txt">
+					<a name="{{_id}}">{{title}}</a>{{#if description}} -- {{description}}{{/if}}
+				</div>
 				<div class="uid">{{creator}}</div>
 				<div class="timestamp">{{created}}</div>
 			</li>
 
 		{{/each}} 
 	</ul>
+</template>
+
+<template name="outlinrVotes">
+	<div class="votes" data-id="{{_id}}"><span class="vote {{on _id}}"> </span><span class="votes">{{votes}}</span></div>
 </template>
 
 <!-- END outlinr -->

@@ -139,14 +139,14 @@ if (Meteor.isClient) {
 
   Template.idea.events({
     'click .related-ideas > li': function(e) {
-      // $target = $(e.target);
+      // $target = $(e.currentTarget);
       // var newIdea = Ideas.find($target.data('id')).fetch()[0]
       // console.log(newIdea);
       // $target.closest('.main-idea').children('.idea-list').prepend(Template.idea(newIdea));
       // autoSuggest();
 
-      var parentId = $(e.target).closest('.main-idea').data('id'); // id of main idea
-      var expandedIdea = Ideas.find($(e.target).data('id')).fetch()[0]; // current idea clicked on
+      var parentId = $(e.currentTarget).closest('.main-idea').data('id'); // id of main idea
+      var expandedIdea = Ideas.find($(e.currentTarget).data('id')).fetch()[0]; // current idea clicked on
       var currentPath = Session.get('expanded-' + parentId);
 
       if (currentPath) {
@@ -216,7 +216,7 @@ if (Meteor.isClient) {
   Template.thoughtstream.events({
     'keyup .input > .text' : function (e) { //'click .submit'
     
-      var text = $(e.target).text();
+      var text = $(e.currentTarget).text();
       result=text.replace("aoe","htn")
 
       Session.set('queryResult',result);
@@ -246,7 +246,7 @@ if (Meteor.isClient) {
     'keyup .text' : function (e) {
       
 
-      var text = $(e.target).val();
+      var text = $(e.currentTarget).val();
       var result=Ideas.find({description: {$regex:('.*'+text+'.*'),$options:'i'}},{limit:5 }).fetch(); 
       //console.log(result)
 
@@ -258,7 +258,7 @@ if (Meteor.isClient) {
                 alert('quote ' + text + ' already exists!' );
               } else {
                 QuotesLists.insert({ text: text });
-                $(e.target).val("");
+                $(e.currentTarget).val("");
               }
             }
       }
@@ -316,7 +316,7 @@ if (Meteor.isClient) {
     'keyup .text' : function (e) {
       
 
-      var text = $(e.target).val();
+      var text = $(e.currentTarget).val();
 
       if (e.which === 13) { // enter
 
@@ -326,7 +326,7 @@ if (Meteor.isClient) {
                 alert('Idea ' + text + ' already exists!' );
               } else {
                 Ideas.insert({ description: text });
-                $(e.target).val("");
+                $(e.currentTarget).val("");
                 text ="";
               }
 
@@ -410,6 +410,12 @@ if (Meteor.isClient) {
     // return Ideas.find({}, {sort: { _id : 1 }}).fetch();
   };
 
+  Template.outlinrVotes.on = function (id) {
+      return Session.get("outlinrVoteOn-"+id) ? "on" : "";
+      // return Ideas.find({}, {sort: { _id : 1 }}).fetch();
+  };
+
+
   Template.outlinrInput.events({
     'click .submit' : function () {
 
@@ -425,25 +431,39 @@ if (Meteor.isClient) {
 
     },
 
-/*
-    'click .list > li > .votes' : function (e) {
-      var target=$(e.target);
-      target.children('.vote').toggleClass('on'); 
-      var num=target.children('span.votes').html()-0; 
-      if (target.children('.vote').hasClass('on')) {
-        num+=1;
-        doUpvote(target.attr('-idea-id')-0,'up');
+  });
+
+
+
+  Template.outlinrVotes.events({
+    'click div.votes' : function (e) {
+      
+      var target=$(e.currentTarget);
+      console.log(x=target)
+      var id=target.data('id');
+      
+
+      if (!Session.get("outlinrVoteOn-"+id)) {
+        
+        Session.set("outlinrVoteOn-"+id,true)
+//        target.children('.vote').addClass('on'); 
+        Ideas.update({ _id: id }, { $inc: { 'votes': 1 } });
       }
       else {
-        num-=1;
-        doUpvote(target.attr('-idea-id')-0,'down');
+        Session.set("outlinrVoteOn-"+id,false)
+  //      target.children('.vote').removeClass('on');
+        Ideas.update({ _id: id }, { $inc: { 'votes': -1 } });
       }
-      target.children('span.votes').html(num) 
-    });
-*/
+
+
+    }
+
 
 
   });
+
+
+
 
 
   Template.outlinrList.helpers({
