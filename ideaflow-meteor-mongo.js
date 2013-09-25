@@ -10,6 +10,7 @@ if (Meteor.isClient) {
     '/votebox': 'votebox',
     '/outlinr': 'outlinr',
     '/thoughtstream': 'thoughtstream',
+    '/hackathon': 'hackathon',
 
   //   '/:ideamapname': function(ideamapname) {
   //   var idea = Ideas.findOne({title: ideamapname});
@@ -472,12 +473,80 @@ if (Meteor.isClient) {
     }
   });
 
-
-
-
-
   //////END outlinr TEMPLATE ///////////
 
+
+//////START hackathon TEMPLATE ///////////
+  Template.hackathonList.gestalt = function () {
+    return Ideas.find({}, {sort: { timestamp : -1 }}).fetch();
+    // return Ideas.find({}, {sort: { _id : 1 }}).fetch();
+  };
+
+  Template.hackathonVotes.on = function (id) {
+      return Session.get("hackathonVoteOn-"+id) ? "on" : "";
+      // return Ideas.find({}, {sort: { _id : 1 }}).fetch();
+  };
+
+
+  Template.hackathonGestalt.statusMsg = function () {
+      var statusTable={0:"Not acknowledged",1:"Acknowledged",2:"In Progress", 3:"Done"}; 
+      
+      return statusTable[(this.status+0)];
+  };
+
+
+  Template.hackathonGestalt.created = function() { 
+      var time = this.timestamp;
+      if(time instanceof Date)
+        return time.toDateString();
+
+      return time;
+  }; 
+
+
+  Template.hackathonInput.events({
+    'click .submit' : function () {
+
+      var text = $('.input > .text').val();
+
+      if(text !== undefined || "") {
+          // Ideas.insert({ title:titleDesc[0], description:titleDesc[1], text:text, status:0, votes:0, creator:'anon' });
+          //Meteor.call("addNewIdea",{ title:titleDesc[0], description:titleDesc[1], text:text, status:0, votes:0, creator:'anon' });
+          
+          addNewIdea({text:text});
+          $('.input > .text').val('');
+      }
+
+    },
+
+  });
+
+
+
+  Template.hackathonVotes.events({
+    'click div.votes' : function (e) {
+      
+      var target=$(e.currentTarget);
+      console.log(x=target)
+      var id=target.data('id');
+      
+
+      if (!Session.get("hackathonVoteOn-"+id)) {
+        
+        Session.set("hackathonVoteOn-"+id,true)
+//        target.children('.vote').addClass('on'); 
+        Ideas.update({ _id: id }, { $inc: { 'votes': 1 } });
+      }
+      else {
+        Session.set("hackathonVoteOn-"+id,false)
+  //      target.children('.vote').removeClass('on');
+        Ideas.update({ _id: id }, { $inc: { 'votes': -1 } });
+      }
+    }
+  });
+
+
+  //////END hackathon TEMPLATE ///////////
 
 
 
