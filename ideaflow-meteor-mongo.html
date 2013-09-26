@@ -225,6 +225,56 @@
 <!-- END outlinr -->
 
 
+<!-- START hackathon -->
+<template name="hackathon">
+	<div id="navbar-fixed-top"><h1>IdeaFlow</h1></div>
+
+	<div class="page-body hackathon">
+		
+		{{> hackathonInput}}
+
+		{{> hackathonList}}		
+	</div>
+</template>
+
+
+<template name="hackathonInput">
+	<div class="input">
+		<textarea class='text' placeholder='New hack'></textarea>
+		<button class='submit'>Add</button>
+	</div>
+</template>
+
+
+<template name="hackathonList">
+	<ul class="list"> 
+		{{#each gestalt}}
+			{{> hackathonGestalt}}
+		{{/each}} 
+	</ul>
+</template>
+
+<template name="hackathonGestalt">
+	<li>
+		<!--<div class="status"><div class="status-circle sc{{status}}" title="{{statusMsg}}"></div></div>-->
+		{{> hackathonVotes}}
+		<div class="idea-txt">
+			<i class="icon-heart" style="color:red"></i>
+			<a name="{{_id}}">{{title}}</a>{{#if description}} -- {{description}}{{/if}}
+		</div>
+		<div class="uid">{{creator}}</div>
+		<div class="timestamp">{{created}}</div>
+	</li>
+</template>
+
+
+<template name="hackathonVotes">
+	<div class="votes" data-id="{{_id}}"><span class="vote {{on _id}}"> </span><span class="votes">{{votes}}</span></div>
+</template>
+
+<!-- END hackathon -->
+
+
 
 <!-- START thoughtstream -->
 <template name="thoughtstream">

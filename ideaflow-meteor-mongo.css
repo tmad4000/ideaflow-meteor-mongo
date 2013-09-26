@@ -154,6 +154,126 @@ div.sc3 { /*Status: complete*/
 
 /* ===================== END outlinr ===================== */
 
+
+
+
+/* ===================== START hackathon ===================== */
+.hackathon .input {
+
+	display: inline-block;
+	margin-bottom: 10px;
+	vertical-align: middle;
+	font-size: 0;
+	white-space: nowrap;
+
+	width:100%;
+}
+
+.hackathon .input > * {
+	margin: 0;
+
+	vertical-align: top;
+	display: inline-block;
+}
+
+.hackathon .input > .text {
+	width:100%;
+}
+
+
+
+.hackathon .list {
+	width:100%;
+}
+
+.hackathon .list li > div {
+	width:100%;
+	display:table-cell;
+	padding: 5px 8px 12px 0px;
+	line-height: 20px;
+	text-align: left;
+	vertical-align: top;
+	border-top: 1px solid rgb(221, 221, 221);
+}
+
+.hackathon .list li > .status {
+	width:36px;
+}
+
+.hackathon .list li > .votes > .vote {
+  display: block;
+  background: url('upvote.png');
+  width: 40px;
+  height: 25px;
+  background-position: 0px -25px;
+} 
+
+.hackathon .list li > .votes > .vote.on {
+  background-position: 0px 0px;
+}
+
+.hackathon .list li > .votes {
+	font-size: 14px;
+	color: rgb(170, 170, 170);
+	text-align: center;
+	width: 40px;
+}
+.hackathon .list li > .votes > .votes {
+	font-size: 14px;
+	color: rgb(170, 170, 170);
+	text-align: center;
+	width: 40px;
+}
+
+
+
+.hackathon .list li > .idea-txt {
+
+}
+
+
+.hackathon > ul.list {
+	padding-left: 0
+}
+
+.hackathon .list li > .uid {
+    color:#AAA;
+    font-size:10px;
+}
+
+.hackathon .list li > .timestamp {
+    width: 80px;
+    min-width: 80px;
+    color:#AAA;
+    padding-right:0;
+    text-align:right;
+    font-size:10px;
+
+}
+
+
+
+
+div.status-circle{width:20px;height:20px;border-radius:50px;font-size:20px;color:#fff;line-height:100px;text-align:center;}
+
+div.sc0 { /*Status: not acknowledged*/
+	background:#AAA
+}
+div.sc1 { /*Status: acknowledged*/
+	background:#FF0
+}
+div.sc2 { /*Status: acknowledged and in progress*/
+	background:#2eabe6
+}
+div.sc3 { /*Status: complete*/
+	background:#0F0
+}
+
+
+/* ===================== END hackathon ===================== */
+
+
+
 /* ===================== Idea List ===================== */
 
 .idea-description {
@@ -394,6 +514,7 @@ h1 {
 	color: #DDD;
 	padding-left: 60px;
 	margin: 9px 0 0 0;
+	line-height: 25px;
 
 }
 h3 {
