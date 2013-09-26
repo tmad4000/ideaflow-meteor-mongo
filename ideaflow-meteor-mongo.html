@@ -228,13 +228,12 @@
 <!-- START hackathon -->
 <template name="hackathon">
 	<div id="navbar-fixed-top"><h1>IdeaFlow</h1></div>
+
 	<div class="page-body hackathon">
 		
 		{{> hackathonInput}}
 
 		{{> hackathonList}}		
-		
-		{{> ideaNamesList}}
 	</div>
 </template>
 
@@ -260,6 +259,7 @@
 		<!--<div class="status"><div class="status-circle sc{{status}}" title="{{statusMsg}}"></div></div>-->
 		{{> hackathonVotes}}
 		<div class="idea-txt">
+			<i class="icon-heart" style="color:red"></i>
 			<a name="{{_id}}">{{title}}</a>{{#if description}} -- {{description}}{{/if}}
 		</div>
 		<div class="uid">{{creator}}</div>

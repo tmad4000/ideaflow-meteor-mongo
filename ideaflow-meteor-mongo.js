@@ -505,14 +505,11 @@ if (Meteor.isClient) {
 
 
   Template.hackathonInput.events({
-    'click .submit' : function () {
+    'click .input>.submit' : function () {
 
       var text = $('.input > .text').val();
 
-      if(text !== undefined || "") {
-          // Ideas.insert({ title:titleDesc[0], description:titleDesc[1], text:text, status:0, votes:0, creator:'anon' });
-          //Meteor.call("addNewIdea",{ title:titleDesc[0], description:titleDesc[1], text:text, status:0, votes:0, creator:'anon' });
-          
+      if(text) { 
           addNewIdea({text:text});
           $('.input > .text').val('');
       }
@@ -584,7 +581,7 @@ if (Meteor.isClient) {
     return Meteor.call("addIdea",doc); 
   }
 
-  window.a=addNewIdea
+  //window.a=addNewIdea
 
 
 }
