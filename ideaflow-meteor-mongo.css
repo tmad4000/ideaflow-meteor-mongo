@@ -151,7 +151,6 @@ div.sc3 { /*Status: complete*/
 	background:#0F0
 }
 
-
 /* ===================== END outlinr ===================== */
 
 
@@ -189,12 +188,29 @@ div.sc3 { /*Status: complete*/
 .hackathon .list li > div {
 	width:100%;
 	display:table-cell;
-	padding: 5px 8px 12px 0px;
+	padding: 5px 0px 12px 0px;
 	line-height: 20px;
 	text-align: left;
 	vertical-align: top;
 	border-top: 1px solid rgb(221, 221, 221);
 }
+
+.hackathon .list li > div.star {
+	width: 0px;
+	margin-right: -8px;
+	color: gray;
+}
+
+.hackathon .list li > div.star > span.glyphicon-star {
+	color: #FFDC00;
+	margin-left: -30px;
+}
+
+.hackathon .list li > div.heart {
+	width: 14px;
+	color: gray;
+}
+
 
 .hackathon .list li > .status {
 	width:36px;
