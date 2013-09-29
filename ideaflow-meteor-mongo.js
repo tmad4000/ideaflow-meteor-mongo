@@ -441,7 +441,7 @@ if (Meteor.isClient) {
           // Ideas.insert({ title:titleDesc[0], description:titleDesc[1], text:text, status:0, votes:0, creator:'anon' });
           //Meteor.call("addNewIdea",{ title:titleDesc[0], description:titleDesc[1], text:text, status:0, votes:0, creator:'anon' });
           
-          addNewIdea({text:text});
+          addNewIdeas({text:text});
           $('.input > .text').val('');
       }
 
@@ -509,8 +509,8 @@ if (Meteor.isClient) {
 
       var text = $('.input > .text').val();
 
-      if(text) { 
-          addNewIdea({text:text});
+      if(text) {
+          addNewIdeasText(text); 
           $('.input > .text').val('');
       }
 
@@ -545,7 +545,13 @@ if (Meteor.isClient) {
 
   //////END hackathon TEMPLATE ///////////
 
+  function addNewIdeasText(ideas) {
+    return $.map(splitIdeas(ideas), function(idea) { return addNewIdea({text:idea}) });
+  }
 
+  function splitIdeas(ideas) {
+      return ideas.replace(/\r/, "").replace(/\n(\n)+/, "\n\n").split(/\n\n/);
+  }
 
   function extractIdeaNameDesc(idea) {
       var TITLE_MAX_LEN=50;
@@ -562,7 +568,6 @@ if (Meteor.isClient) {
 
 
   function addNewIdea(doc) {   
-
     if(!doc.title && !doc.description) {
       var titleDesc=extractIdeaNameDesc(doc.text);
       doc.title=titleDesc[0]
