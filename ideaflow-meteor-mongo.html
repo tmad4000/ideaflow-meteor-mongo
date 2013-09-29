@@ -259,7 +259,7 @@
 		<!--<div class="status"><div class="status-circle sc{{status}}" title="{{statusMsg}}"></div></div>-->
 		{{> hackathonVotes}}
 		<div class="idea-txt">
-			<i class="icon-heart" style="color:red"></i>
+			<!-- <i class="icon-heart" style="color:red"></i> -->
 			<a name="{{_id}}">{{title}}</a>{{#if description}} -- {{description}}{{/if}}
 		</div>
 		<div class="uid">{{creator}}</div>
@@ -269,7 +269,9 @@
 
 
 <template name="hackathonVotes">
+	<div class="star">{{#if this}} <span class="glyphicon glyphicon-star"></span>{{/if}}</div>
 	<div class="votes" data-id="{{_id}}"><span class="vote {{on _id}}"> </span><span class="votes">{{votes}}</span></div>
+
 </template>
 
 <!-- END hackathon -->
