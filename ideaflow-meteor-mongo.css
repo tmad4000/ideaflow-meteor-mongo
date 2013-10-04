@@ -268,6 +268,10 @@ div.sc3 { /*Status: complete*/
 }
 
 
+.hackathon .idea-comments > ul {
+	border:1px solid #DDD;
+}
+
 
 
 div.status-circle{width:20px;height:20px;border-radius:50px;font-size:20px;color:#fff;line-height:100px;text-align:center;}

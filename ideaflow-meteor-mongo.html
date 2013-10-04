@@ -255,12 +255,36 @@
 </template>
 
 <template name="hackathonGestalt">
-	<li>
+	<li class="gestalt" data-id="{{_id}}">
 		<!--<div class="status"><div class="status-circle sc{{status}}" title="{{statusMsg}}"></div></div>-->
 		{{> hackathonVotes}}
-		<div class="idea-txt">
-			<!-- <i class="icon-heart" style="color:red"></i> -->
-			<a name="{{_id}}">{{title}}</a>{{#if description}} -- {{description}}{{/if}}
+		<div class="idea-body">
+			<div class="idea-txt">
+				<!-- <i class="icon-heart" style="color:red"></i> -->
+				<a name="{{_id}}">{{title}}</a>{{#if description}} -- {{description}}{{/if}}
+			</div>
+			<div class="idea-comments">
+				<div><a class="expand-comments" href="#expandComments-{{_id}}">
+				{{#if numComments _id}}
+					{{numComments _id}} comments
+				{{else}}
+					<span class="glyphicon glyphicon-comment"></span>Comment
+				{{/if}}
+				</a>
+				</div>
+
+
+				{{#if commentsExpanded _id}}
+					<ul>
+						<li class="add-comment"><input class="comment"><button class="submit">Comment</button></li>
+						{{#each comment}}
+							<li>{{comment}}</li>
+						{{/each}}
+					</ul>
+				{{/if}}
+				
+
+			</div>
 		</div>
 		<div class="uid">{{creator}}</div>
 		<div class="timestamp">{{created}}</div>
@@ -363,7 +387,7 @@
 			
 			<ul class='idea-list'>
 				{{#each expandedChild _id}}
-					Expanded Idea: {{> expandedIdea}}
+					{{> expandedIdea}}
 				{{/each}}
 			</ul>
 

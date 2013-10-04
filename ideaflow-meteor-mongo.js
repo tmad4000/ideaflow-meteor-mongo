@@ -503,6 +503,25 @@ if (Meteor.isClient) {
       return time;
   }; 
 
+  Template.hackathonGestalt.numComments = function(id) { 
+      var c = Ideas.find({_id:id}).fetch().comments;
+      var n = 0;
+      if(c)
+        n=c.length;
+      return n;
+  }; 
+
+  Template.hackathonGestalt.commentsExpanded = function(id) { 
+      //Session.get(commentsExpanded+"-"+id)===
+      return true;
+  }; 
+
+
+  Template.hackathonGestalt.comment = function() { 
+      return Ideas.find().fetch()
+  }; 
+
+
 
   Template.hackathonInput.events({
     'click .input>.submit' : function () {
@@ -515,8 +534,29 @@ if (Meteor.isClient) {
       }
 
     },
+  });
+
+  Template.hackathonGestalt.events({
+    'click .expand-comments' : function (e) {
+      var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
+
+      Session.set("commentsExpanded-"+gestaltId,!(Session.get("commentsExpanded-"+gestaltId)===true));
+    },
+    'click .add-comment > .submit' : function (e) {
+      
+
+      var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
+      var comment=$(e.currentTarget).closest('.add-comment').find('.comment').val();
+      Ideas.update({_id:gestaltId}, {$push:{comments:comment}});  
+
+      console.log(comment)
+
+    },
 
   });
+
+
+
 
 
 
@@ -589,10 +629,6 @@ if (Meteor.isClient) {
     return Meteor.call("addIdea",doc); 
   }
 
-<<<<<<< HEAD
-=======
-  //window.a=addNewIdea
->>>>>>> a988dad5fdaaa9f1eaf75db49f6552e2d00b3074
 
 
 }
