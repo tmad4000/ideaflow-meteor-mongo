@@ -504,12 +504,23 @@ if (Meteor.isClient) {
   }; 
 
   Template.hackathonGestalt.numComments = function(id) { 
-      var c = Ideas.find({_id:id}).fetch().comments;
-      var n = 0;
-      if(c)
-        n=c.length;
-      return n;
-  }; 
+      // console.log(Ideas.find({_id:id}).comments);
+      // console.log(this.comments.length);
+      // return Ideas.find({_id:id}).comments.length;
+      // var c = Ideas.find({_id:id}).fetch().comments;
+      // var n = 0;
+      // if(c)
+      //   n=c.length;
+      // console.log(c);
+      // return n;
+      if(this.comments){
+        console.log(this.comments.length);
+        return this.comments.length;
+      }
+      else
+        return 0;
+  };
+
 
   Template.hackathonGestalt.commentsExpanded = function(id) { 
       //Session.get(commentsExpanded+"-"+id)===
@@ -567,10 +578,6 @@ if (Meteor.isClient) {
     },
 
   });
-
-
-
-
 
 
   Template.hackathonVotes.events({
