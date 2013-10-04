@@ -212,6 +212,7 @@
 		<div class="idea-txt">
 			<a name="{{_id}}">{{title}}</a>{{#if description}} -- {{description}}{{/if}}
 		</div>
+		<div class="edit-idea">{{editOp}}</div>
 		<div class="uid">{{creator}}</div>
 		<div class="timestamp">{{created}}</div>
 	</li>
@@ -240,8 +241,8 @@
 
 <template name="hackathonInput">
 	<div class="input">
-		<textarea class='text' placeholder='New hack'></textarea>
-		<button class='submit'>Add</button>
+		<textarea class='text' placeholder='Hack title -- Hack description'></textarea>
+		<button class='btn btn-primary btn-sm'>Add</button>
 	</div>
 </template>
 
@@ -268,7 +269,7 @@
 				{{#if numComments}}
 					{{numComments _id}} comments
 				{{else}}
-					<span class="glyphicon glyphicon-comment"></span>({{numComments _id }})Comments
+					<span class="glyphicon glyphicon-comment"></span> Comment ({{numComments _id }})
 				{{/if}}
 				</a>
 				</div>

@@ -503,6 +503,16 @@ if (Meteor.isClient) {
       return time;
   }; 
 
+
+
+  Template.hackathonGestalt.edit = function() { 
+      var time = this.timestamp;
+      if(time instanceof Date)
+        return time.toDateString();
+
+      return time;
+  }; 
+
   Template.hackathonGestalt.numComments = function(id) { 
       // console.log(Ideas.find({_id:id}).comments);
       // console.log(this.comments.length);
@@ -514,7 +524,7 @@ if (Meteor.isClient) {
       // console.log(c);
       // return n;
       if(this.comments){
-        console.log(this.comments.length);
+        // console.log(this.comments.length);
         return this.comments.length;
       }
       else
@@ -538,13 +548,6 @@ if (Meteor.isClient) {
         return []; 
   }; 
 
-  Template.hackathonVotes.gt = function(id){
-    console.log(Session.get("hackathonVoteOn-"+id) ? "on" : "");
-    if(id > 5)
-      return true;
-    else 
-      return false;
-  }
 
   Template.hackathonInput.events({
     'click .input>.submit' : function () {
@@ -576,7 +579,10 @@ if (Meteor.isClient) {
       // console.log(comment)
 
     },
-
+    'click .edit-idea' : function(e){
+        var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
+        console.log(gestaltId); 
+    },
   });
 
 

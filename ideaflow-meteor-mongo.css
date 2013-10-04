@@ -388,6 +388,10 @@ div.sc3 { /*Status: complete*/
     float: right;
 }
 
+.edit-idea{
+    float: right;	
+}
+
 .label-info.expanded, .label-info, .ms-sel-ctn .ms-sel-item {
   background-color: #3a87ad;
   color:#EEE;
