@@ -265,7 +265,7 @@
 			</div>
 			<div class="idea-comments">
 				<div><a class="expand-comments" href="#expandComments-{{_id}}">
-				{{#if numComments _id}}
+				{{#if numComments}}
 					{{numComments _id}} comments
 				{{else}}
 					<span class="glyphicon glyphicon-comment"></span>Comment
@@ -278,7 +278,7 @@
 					<ul>
 						<li class="add-comment"><input class="comment"><button class="submit">Comment</button></li>
 						{{#each comment}}
-							<li>{{comment}}</li>
+							<li class="idea-comment">{{commentText}}</li>
 						{{/each}}
 					</ul>
 				{{/if}}

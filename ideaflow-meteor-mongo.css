@@ -267,9 +267,20 @@ div.sc3 { /*Status: complete*/
 
 }
 
+.hackathon .add-comment{
+	vertical-align: right;
+	padding-bottom: 5px;
+}
+
+.hackathon .idea-comment {
+	border-top:1px dotted #DDD;
+	padding-top: 5px;
+	padding-top: 2px;
+}
 
 .hackathon .idea-comments > ul {
 	border:1px solid #DDD;
+	padding-right: 40px;
 }
 
 

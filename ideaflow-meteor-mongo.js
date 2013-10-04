@@ -513,15 +513,19 @@ if (Meteor.isClient) {
 
   Template.hackathonGestalt.commentsExpanded = function(id) { 
       //Session.get(commentsExpanded+"-"+id)===
-      return true;
+      //if 
+      console.log(Session.get("commentsExpanded-"+id)===true);
+      return Session.get("commentsExpanded-"+id)===true;
   }; 
+
 
 
   Template.hackathonGestalt.comment = function() { 
-      return Ideas.find().fetch()
+      if(this.comments)
+        return this.comments.reverse();
+      else 
+        return []; 
   }; 
-
-
 
   Template.hackathonInput.events({
     'click .input>.submit' : function () {
@@ -541,15 +545,16 @@ if (Meteor.isClient) {
       var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
 
       Session.set("commentsExpanded-"+gestaltId,!(Session.get("commentsExpanded-"+gestaltId)===true));
+      // console.log(Session.get("commentsExpanded-"+gestaltId)===true);
     },
     'click .add-comment > .submit' : function (e) {
-      
+        
+        var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
+        var comment=$(e.currentTarget).closest('.add-comment').find('.comment').val();
+        if(comment)
+          Ideas.update({_id:gestaltId}, {$push:{comments:{commentText:comment}}});  
 
-      var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
-      var comment=$(e.currentTarget).closest('.add-comment').find('.comment').val();
-      Ideas.update({_id:gestaltId}, {$push:{comments:comment}});  
-
-      console.log(comment)
+      // console.log(comment)
 
     },
 
