@@ -514,7 +514,7 @@ if (Meteor.isClient) {
   Template.hackathonGestalt.commentsExpanded = function(id) { 
       //Session.get(commentsExpanded+"-"+id)===
       //if 
-      console.log(Session.get("commentsExpanded-"+id)===true);
+      // console.log(Session.get("commentsExpanded-"+id)===true);
       return Session.get("commentsExpanded-"+id)===true;
   }; 
 
@@ -526,6 +526,14 @@ if (Meteor.isClient) {
       else 
         return []; 
   }; 
+
+  Template.hackathonVotes.gt = function(id){
+    console.log(Session.get("hackathonVoteOn-"+id) ? "on" : "");
+    if(id > 5)
+      return true;
+    else 
+      return false;
+  }
 
   Template.hackathonInput.events({
     'click .input>.submit' : function () {
