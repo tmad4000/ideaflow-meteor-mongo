@@ -516,8 +516,8 @@ if (Meteor.isClient) {
 //      return true;
   }; 
 
-  Template.hackathonGestalt.ideaEdited = function() { 
-      return Session.get("ideaEdited-"+this._id)===true
+  Template.hackathonGestalt.ideaEditable = function() { 
+      return Session.get("ideaEditable-"+this._id)===true
 //      return true;
   }; 
 
@@ -549,25 +549,33 @@ if (Meteor.isClient) {
       var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
       Session.set("commentsExpanded-"+gestaltId,!(Session.get("commentsExpanded-"+gestaltId)===true));
     },
-    'input .idea-txt' : function (e) {
+    'click .idea-body>.edit' : function (e) {
       //console.log('eue')
-      Session.set("ideaEdited-"+this._id,true);
-      $(e.currentTarget).closest('.idea-body').find('.update-idea').toggle(true);
-      
+      Session.set("ideaEditable-"+this._id,true);
+      $(e.currentTarget).closest('.idea-body').find('.idea-txt').focus()
+
+//      var gestaltId=$(e.currentTarget).attr("contentEditable","true");
+//      var gestaltId=$(e.currentTarget).parent().find('.update-idea').attr("contentEditable","true");
+    },
+
+    'click .idea-body>.cancel' : function (e) {
+      //console.log('eue')
+      Session.set("ideaEditable-"+this._id,false);
 //      var gestaltId=$(e.currentTarget).attr("contentEditable","true");
 //      var gestaltId=$(e.currentTarget).parent().find('.update-idea').attr("contentEditable","true");
     },
     'click .update-idea' : function (e) {
+      console.log('oeuoeu')
       var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
       
       var newTxt=$(e.currentTarget).closest('.idea-body').find('.idea-txt');
       newTxt=newTxt.textContent || newTxt.innerText || "";
 
       updateIdea({_id:gestaltId,text:newTxt});
-      Session.set("ideaEdited-"+gestaltId,false);
-      $(e.currentTarget).toggle(false)
-//      console.log(comment)
+      Session.set("ideaEditable-"+gestaltId,false);
+      
     },
+
     'click .add-comment > .submit' : function (e) {
       var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
       var comment=$(e.currentTarget).closest('.add-comment').find('.comment').val();
@@ -693,6 +701,7 @@ if (Meteor.isServer) {
 
     updateIdea: function (doc) {
       doc.timestamp = new Date;
+      console.log(doc.text)
       return Ideas.update({_id:doc._id},doc);
     }
 
