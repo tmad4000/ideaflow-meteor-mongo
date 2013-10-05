@@ -533,8 +533,10 @@ if (Meteor.isClient) {
 
 
   Template.hackathonGestalt.commentsExpanded = function(id) { 
-      return Session.get("commentsExpanded-"+id)===true;
+      return Session.get("commentsExpanded-"+this._id)===true
   };
+
+
 
   Template.hackathonGestalt.ideaEditable = function() { 
       return Session.get("ideaEditable-"+this._id)===true
@@ -566,7 +568,7 @@ if (Meteor.isClient) {
   Template.hackathonGestalt.events({
     'click .expand-comments' : function (e) {
       var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
-      Session.set("commentsExpanded-"+gestaltId,!(Session.get("commentsExpanded-"+gestaltId)===true));
+      Session.set("commentsExpanded-"+this._id,!(Session.get("commentsExpanded-"+this._id)===true));
       // console.log(Session.get("commentsExpanded-"+gestaltId)===true);
     },
     'click .add-comment > .submit' : function (e) {
