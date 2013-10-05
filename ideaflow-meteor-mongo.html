@@ -240,7 +240,7 @@
 
 <template name="hackathonInput">
 	<div class="input">
-		<textarea class='text' placeholder='New hack'></textarea>
+		<textarea class='text' placeholder='New hack idea'></textarea>
 		<button class='submit'>Add</button>
 	</div>
 </template>
@@ -265,20 +265,20 @@
 			</div>
 			<div class="idea-comments">
 				<div><a class="expand-comments" href="#expandComments-{{_id}}">
-				{{#if numComments _id}}
-					{{numComments _id}} comments
+				{{#if numComments}}
+					{{numComments}}+ Comments
 				{{else}}
-					<span class="glyphicon glyphicon-comment"></span>Comment
+					<span class="glyphicon glyphicon-comment"></span>&nbsp;Comment
 				{{/if}}
 				</a>
 				</div>
 
 
-				{{#if commentsExpanded _id}}
-					<ul>
+				{{#if commentsExpanded}}
+					<ul class="comments">
 						<li class="add-comment"><input class="comment"><button class="submit">Comment</button></li>
 						{{#each comment}}
-							<li>{{comment}}</li>
+							<li>{{commentTxt}}</li>
 						{{/each}}
 					</ul>
 				{{/if}}
