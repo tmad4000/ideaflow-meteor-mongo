@@ -260,23 +260,24 @@
 		<!--<div class="status"><div class="status-circle sc{{status}}" title="{{statusMsg}}"></div></div>-->
 		{{> hackathonVotes}}
 		<div class="idea-body">
-			<div class="idea-txt">
+			<div class="idea-txt" {{#if ideaEditable}}contentEditable="true"{{/if}}>
 				<!-- <i class="icon-heart" style="color:red"></i> -->
 				<a name="{{_id}}">{{title}}</a>{{#if description}} -- {{description}}{{/if}}
 			</div>
+			{{#if ideaEditable}}<a href="" class="cancel">Cancel</a><button class="update-idea">Update</button>{{else}}<a href="#" class="edit">Edit</a>{{/if}}
 			<div class="idea-comments">
 				<div><a class="expand-comments" href="#expandComments-{{_id}}">
 				{{#if numComments}}
-					{{numComments _id}} comments
+					({{numComments _id }}) Comments
 				{{else}}
-					<span class="glyphicon glyphicon-comment"></span> Comment ({{numComments _id }})
+					<span class="glyphicon glyphicon-comment"></span>&nbsp;Comment
 				{{/if}}
 				</a>
 				</div>
 
 
-				{{#if commentsExpanded _id}}
-					<ul>
+				{{#if commentsExpanded}}
+					<ul class="comments">
 						<li class="add-comment"><input class="comment"><button class="submit">Comment</button></li>
 						{{#each comment}}
 							<li class="idea-comment">{{commentText}}</li>

@@ -270,6 +270,7 @@ div.sc3 { /*Status: complete*/
 .hackathon .add-comment{
 	vertical-align: right;
 	padding-bottom: 5px;
+
 }
 
 .hackathon .idea-comment {
@@ -278,9 +279,18 @@ div.sc3 { /*Status: complete*/
 	padding-top: 2px;
 }
 
+.hackathon .comments {
+	padding:5px;
+}
+
 .hackathon .idea-comments > ul {
 	border:1px solid #DDD;
 	padding-right: 40px;
+}
+
+.hackathon .add-comment > input {
+	padding-left: 0;
+	margin-left: 0;
 }
 
 

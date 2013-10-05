@@ -533,12 +533,13 @@ if (Meteor.isClient) {
 
 
   Template.hackathonGestalt.commentsExpanded = function(id) { 
-      //Session.get(commentsExpanded+"-"+id)===
-      //if 
-      // console.log(Session.get("commentsExpanded-"+id)===true);
       return Session.get("commentsExpanded-"+id)===true;
-  }; 
+  };
 
+  Template.hackathonGestalt.ideaEditable = function() { 
+      return Session.get("ideaEditable-"+this._id)===true
+//      return true;
+  }; 
 
 
   Template.hackathonGestalt.comment = function() { 
@@ -565,7 +566,6 @@ if (Meteor.isClient) {
   Template.hackathonGestalt.events({
     'click .expand-comments' : function (e) {
       var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
-
       Session.set("commentsExpanded-"+gestaltId,!(Session.get("commentsExpanded-"+gestaltId)===true));
       // console.log(Session.get("commentsExpanded-"+gestaltId)===true);
     },
@@ -577,6 +577,39 @@ if (Meteor.isClient) {
           Ideas.update({_id:gestaltId}, {$push:{comments:{commentText:comment}}});  
 
       // console.log(comment)
+    },
+    'click .idea-body>.edit' : function (e) {
+      //console.log('eue')
+      Session.set("ideaEditable-"+this._id,true);
+      $(e.currentTarget).closest('.idea-body').find('.idea-txt').focus()
+
+//      var gestaltId=$(e.currentTarget).attr("contentEditable","true");
+//      var gestaltId=$(e.currentTarget).parent().find('.update-idea').attr("contentEditable","true");
+    },
+
+    'click .idea-body>.cancel' : function (e) {
+      //console.log('eue')
+      Session.set("ideaEditable-"+this._id,false);
+//      var gestaltId=$(e.currentTarget).attr("contentEditable","true");
+//      var gestaltId=$(e.currentTarget).parent().find('.update-idea').attr("contentEditable","true");
+    },
+    'click .update-idea' : function (e) {
+      console.log('oeuoeu')
+      var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
+      
+      var newTxt=$(e.currentTarget).closest('.idea-body').find('.idea-txt').html();
+      newTxt=stripHTML(newTxt)
+      console.log(x=newTxt)
+
+      updateIdea({_id:gestaltId},{text:newTxt});
+      Session.set("ideaEditable-"+gestaltId,false);
+      
+    },
+
+    'click .add-comment > .submit' : function (e) {
+      var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
+      var comment=$(e.currentTarget).closest('.add-comment').find('.comment').val();
+      Ideas.update({_id:gestaltId}, {$push:{comments:{commentTxt:comment}}});  
 
     },
     'click .edit-idea' : function(e){
@@ -608,7 +641,12 @@ if (Meteor.isClient) {
     }
   });
 
-
+  function stripHTML(html)
+  {
+     var tmp = document.createElement("DIV");
+     tmp.innerHTML = html;
+     return tmp.textContent || tmp.innerText || "";
+  }
   //////END hackathon TEMPLATE ///////////
 
   function addNewIdeasText(ideas) {
@@ -656,6 +694,25 @@ if (Meteor.isClient) {
   }
 
 
+  function updateIdea(sel,doc) {   
+    if(!sel._id) {
+      console.log('update failed')
+      return false;
+    }
+    console.log('update: '+sel._id + " " + doc.text + " :upd")
+
+    if(!doc.title && !doc.description) {
+      var titleDesc=extractIdeaNameDesc(doc.text);
+      doc.title=titleDesc[0]
+      doc.description=titleDesc[1]
+    }
+
+        
+    return Meteor.call("updateIdeaServer",{sel:sel,doc:doc}); 
+  }
+
+
+
 
 }
 
@@ -665,7 +722,15 @@ if (Meteor.isServer) {
     addIdea: function (doc) {
       doc.timestamp = new Date;
       return Ideas.insert(doc);
+    },
+
+    updateIdeaServer: function (selDoc) {
+      
+      doc.timestamp = new Date;
+      console.log(selDoc.doc.text)
+      return Ideas.update(selDoc.sel,selDoc.doc);
     }
+
 
   });
 
