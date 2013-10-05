@@ -516,6 +516,10 @@ if (Meteor.isClient) {
 //      return true;
   }; 
 
+  Template.hackathonGestalt.ideaEditable = function() { 
+      return Session.get("ideaEditable-"+this._id)===true
+//      return true;
+  }; 
 
   Template.hackathonGestalt.comment = function() { 
       var c = this.comments;
@@ -545,12 +549,17 @@ if (Meteor.isClient) {
       var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
       Session.set("commentsExpanded-"+gestaltId,!(Session.get("commentsExpanded-"+gestaltId)===true));
     },
+    'click .idea-txt' : function (e) {
+      Session.set("ideaEditable-"+this._id,!(Session.get("ideaEditable-"+this._id)===true));
+//      var gestaltId=$(e.currentTarget).attr("contentEditable","true");
+
+    },
     'click .add-comment > .submit' : function (e) {
       var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
       var comment=$(e.currentTarget).closest('.add-comment').find('.comment').val();
       Ideas.update({_id:gestaltId}, {$push:{comments:{commentTxt:comment}}});  
 
-      console.log(comment)
+//      console.log(comment)
 
     },
 
