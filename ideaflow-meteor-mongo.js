@@ -533,7 +533,8 @@ if (Meteor.isClient) {
 
 
   Template.hackathonGestalt.commentsExpanded = function(id) { 
-      return Session.get("commentsExpanded-"+this._id)===true
+    return Session.get("commentsExpanded-"+this._id)===true
+
   };
 
 
@@ -571,15 +572,6 @@ if (Meteor.isClient) {
       Session.set("commentsExpanded-"+this._id,!(Session.get("commentsExpanded-"+this._id)===true));
       // console.log(Session.get("commentsExpanded-"+gestaltId)===true);
     },
-    'click .add-comment > .submit' : function (e) {
-        
-        var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
-        var comment=$(e.currentTarget).closest('.add-comment').find('.comment').val();
-        if(comment)
-          Ideas.update({_id:gestaltId}, {$push:{comments:{commentText:comment}}});  
-
-      // console.log(comment)
-    },
     'click .idea-body>.edit' : function (e) {
       //console.log('eue')
       Session.set("ideaEditable-"+this._id,true);
@@ -612,8 +604,8 @@ if (Meteor.isClient) {
       var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
       var comment=$(e.currentTarget).closest('.add-comment').find('.comment').val();
       Ideas.update({_id:gestaltId}, {$push:{comments:{commentTxt:comment}}});  
-
     },
+
     'click .edit-idea' : function(e){
         var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
         console.log(gestaltId); 
