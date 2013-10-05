@@ -259,11 +259,11 @@
 		<!--<div class="status"><div class="status-circle sc{{status}}" title="{{statusMsg}}"></div></div>-->
 		{{> hackathonVotes}}
 		<div class="idea-body">
-			<div class="idea-txt" {{#if ideaEditable}}contentEditable="true"{{/if}}>
+			<div class="idea-txt" contentEditable="true">
 				<!-- <i class="icon-heart" style="color:red"></i> -->
 				<a name="{{_id}}">{{title}}</a>{{#if description}} -- {{description}}{{/if}}
 			</div>
-			{{#if ideaEditable}}<button class="update-idea">Update</button>{{/if}}
+			{{#if ideaEdited}}<button class="update-idea">Update</button>{{/if}}
 			<div class="idea-comments">
 				<div><a class="expand-comments" href="#expandComments-{{_id}}">
 				{{#if numComments}}

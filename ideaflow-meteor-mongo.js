@@ -516,8 +516,8 @@ if (Meteor.isClient) {
 //      return true;
   }; 
 
-  Template.hackathonGestalt.ideaEditable = function() { 
-      return Session.get("ideaEditable-"+this._id)===true
+  Template.hackathonGestalt.ideaEdited = function() { 
+      return Session.get("ideaEdited-"+this._id)===true
 //      return true;
   }; 
 
@@ -549,10 +549,21 @@ if (Meteor.isClient) {
       var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
       Session.set("commentsExpanded-"+gestaltId,!(Session.get("commentsExpanded-"+gestaltId)===true));
     },
-    'click .idea-txt' : function (e) {
-      Session.set("ideaEditable-"+this._id,!(Session.get("ideaEditable-"+this._id)===true));
+    'input .idea-txt' : function (e) {
+      //console.log('eue')
+      Session.set("ideaEdited-"+this._id,true);
 //      var gestaltId=$(e.currentTarget).attr("contentEditable","true");
+//      var gestaltId=$(e.currentTarget).parent().find('.update-idea').attr("contentEditable","true");
+    },
+    'click .update-idea' : function (e) {
+      var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
+      
+      var newTxt=$(e.currentTarget).closest('.idea-body').find('.idea-txt');
+      newTxt=newTxt.textContent || newTxt.innerText || "";
 
+      updateIdea({_id:gestaltId,text:newTxt});
+      Session.set("ideaEdited-"+gestaltId,false);
+//      console.log(comment)
     },
     'click .add-comment > .submit' : function (e) {
       var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
@@ -640,6 +651,36 @@ if (Meteor.isClient) {
   }
 
 
+  function updateIdea(doc) {   
+    if(!doc._id) {
+      console.log('update failed')
+      return false;
+    }
+    console.log('update')
+
+    if(!doc.title && !doc.description) {
+      var titleDesc=extractIdeaNameDesc(doc.text);
+      doc.title=titleDesc[0]
+      doc.description=titleDesc[1]
+    }
+
+    if(!doc.status)
+      doc.status=0;
+
+    if(!doc.votes)
+      doc.votes=0;
+      
+    if(!doc.creator)
+      doc.creator='anon';
+
+    if(!doc.relatedIdeas)
+      doc.relatedIdeas=[];
+        
+    return Meteor.call("addIdea",doc); 
+  }
+
+
+
 
 }
 
@@ -649,7 +690,13 @@ if (Meteor.isServer) {
     addIdea: function (doc) {
       doc.timestamp = new Date;
       return Ideas.insert(doc);
+    },
+
+    updateIdea: function (doc) {
+      doc.timestamp = new Date;
+      return Ideas.update({_id:doc._id},doc);
     }
+
 
   });
 
