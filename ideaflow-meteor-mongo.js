@@ -552,6 +552,8 @@ if (Meteor.isClient) {
     'input .idea-txt' : function (e) {
       //console.log('eue')
       Session.set("ideaEdited-"+this._id,true);
+      $(e.currentTarget).closest('.idea-body').find('.update-idea').toggle(true);
+      
 //      var gestaltId=$(e.currentTarget).attr("contentEditable","true");
 //      var gestaltId=$(e.currentTarget).parent().find('.update-idea').attr("contentEditable","true");
     },
@@ -563,6 +565,7 @@ if (Meteor.isClient) {
 
       updateIdea({_id:gestaltId,text:newTxt});
       Session.set("ideaEdited-"+gestaltId,false);
+      $(e.currentTarget).toggle(false)
 //      console.log(comment)
     },
     'click .add-comment > .submit' : function (e) {
@@ -575,10 +578,6 @@ if (Meteor.isClient) {
     },
 
   });
-
-
-
-
 
 
   Template.hackathonVotes.events({
