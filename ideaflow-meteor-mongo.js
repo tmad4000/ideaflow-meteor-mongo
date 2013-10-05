@@ -568,10 +568,11 @@ if (Meteor.isClient) {
       console.log('oeuoeu')
       var gestaltId=$(e.currentTarget).closest('.gestalt').data('id');
       
-      var newTxt=$(e.currentTarget).closest('.idea-body').find('.idea-txt');
-      newTxt=newTxt.textContent || newTxt.innerText || "";
+      var newTxt=$(e.currentTarget).closest('.idea-body').find('.idea-txt').html();
+      newTxt=stripHTML(newTxt)
+      console.log(x=newTxt)
 
-      updateIdea({_id:gestaltId,text:newTxt});
+      updateIdea({_id:gestaltId},{text:newTxt});
       Session.set("ideaEditable-"+gestaltId,false);
       
     },
@@ -610,7 +611,12 @@ if (Meteor.isClient) {
     }
   });
 
-
+  function stripHTML(html)
+  {
+     var tmp = document.createElement("DIV");
+     tmp.innerHTML = html;
+     return tmp.textContent || tmp.innerText || "";
+  }
   //////END hackathon TEMPLATE ///////////
 
   function addNewIdeasText(ideas) {
@@ -658,12 +664,12 @@ if (Meteor.isClient) {
   }
 
 
-  function updateIdea(doc) {   
-    if(!doc._id) {
+  function updateIdea(sel,doc) {   
+    if(!sel._id) {
       console.log('update failed')
       return false;
     }
-    console.log('update')
+    console.log('update: '+sel._id + " " + doc.text + " :upd")
 
     if(!doc.title && !doc.description) {
       var titleDesc=extractIdeaNameDesc(doc.text);
@@ -671,19 +677,8 @@ if (Meteor.isClient) {
       doc.description=titleDesc[1]
     }
 
-    if(!doc.status)
-      doc.status=0;
-
-    if(!doc.votes)
-      doc.votes=0;
-      
-    if(!doc.creator)
-      doc.creator='anon';
-
-    if(!doc.relatedIdeas)
-      doc.relatedIdeas=[];
         
-    return Meteor.call("addIdea",doc); 
+    return Meteor.call("updateIdeaServer",{sel:sel,doc:doc}); 
   }
 
 
@@ -699,10 +694,11 @@ if (Meteor.isServer) {
       return Ideas.insert(doc);
     },
 
-    updateIdea: function (doc) {
+    updateIdeaServer: function (selDoc) {
+      
       doc.timestamp = new Date;
-      console.log(doc.text)
-      return Ideas.update({_id:doc._id},doc);
+      console.log(selDoc.doc.text)
+      return Ideas.update(selDoc.sel,selDoc.doc);
     }
 
 
