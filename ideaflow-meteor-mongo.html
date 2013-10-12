@@ -295,7 +295,13 @@
 
 
 <template name="hackathonVotes">
-	<div class="star">{{#if votes}} <span class="glyphicon glyphicon-star"></span>{{/if}}</div>
+	<div class="star">
+	{{#if votes}}
+		<span class="glyphicon glyphicon-star"></span>
+	{{else}}
+		<span class="glyphicon glyphicon-star-empty"></span>
+	{{/if}}
+	</div>
 	<div class="votes" data-id="{{_id}}"><span class="vote {{on _id}}"> </span><span class="votes">{{votes}}</span></div>
 
 </template>

@@ -201,9 +201,16 @@ div.sc3 { /*Status: complete*/
 	color: gray;
 }
 
+.hackathon .list li > div.star > span.glyphicon {
+	margin-left: -30px;
+}
+
 .hackathon .list li > div.star > span.glyphicon-star {
 	color: #FFDC00;
-	margin-left: -30px;
+}
+
+.hackathon .list li > div.star > span.glyphicon-star-empty {
+	color: black;
 }
 
 .hackathon .list li > div.heart {
